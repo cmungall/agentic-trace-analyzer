@@ -1,0 +1,140 @@
+id: https://w3id.org/agentic-trace-analyzer/failure-modes
+name: agentic_trace_failure_modes
+title: Agentic Trace Failure Mode Ontology
+description: >-
+  LinkML schema for ontology-backed classification of agentic AI trace failures.
+license: https://opensource.org/license/mit
+version: 0.1.0
+
+prefixes:
+  linkml: https://w3id.org/linkml/
+  ata: https://w3id.org/agentic-trace-analyzer/
+  schema: http://schema.org/
+
+default_prefix: ata
+default_range: string
+
+imports:
+  - linkml:types
+
+slots:
+  id:
+    identifier: true
+    required: true
+    range: string
+    description: Stable identifier for a category profile or failure mode.
+  name:
+    required: true
+    range: string
+    description: Human-readable label.
+  description:
+    required: true
+    range: string
+    description: Concise description of the category or failure mode.
+  category:
+    required: true
+    range: FailureCategory
+    description: Top-level taxonomy category.
+  severity_range:
+    required: true
+    range: SeverityRange
+    inlined: true
+    description: Inclusive qualitative severity span.
+  typical_triggers:
+    multivalued: true
+    range: string
+    description: Common runtime conditions that trigger the failure mode.
+  detection_signals:
+    multivalued: true
+    range: string
+    description: Trace-level signals used to detect the failure mode.
+  mitigations:
+    multivalued: true
+    range: string
+    description: Prioritized mitigations for prevention or containment.
+  related_failure_modes:
+    multivalued: true
+    range: FailureMode
+    description: Cross-references to adjacent or causally related failure modes.
+  subtypes:
+    multivalued: true
+    range: FailureMode
+    description: Failure modes contained within a top-level category.
+
+classes:
+  FailureModeOntology:
+    tree_root: true
+    description: Root object for the failure mode ontology.
+    attributes:
+      name:
+        required: true
+      description:
+        required: true
+      categories:
+        multivalued: true
+        inlined_as_list: true
+        range: FailureModeCategoryProfile
+      failure_modes:
+        multivalued: true
+        inlined_as_list: true
+        range: FailureMode
+
+  FailureModeCategoryProfile:
+    description: A top-level category grouping related failure modes.
+    slots:
+      - id
+      - name
+      - description
+      - category
+      - subtypes
+
+  FailureMode:
+    description: A concrete failure mode from the synthesized taxonomy.
+    slots:
+      - id
+      - name
+      - description
+      - category
+      - severity_range
+      - typical_triggers
+      - detection_signals
+      - mitigations
+      - related_failure_modes
+
+  SeverityRange:
+    description: Inclusive qualitative severity band.
+    attributes:
+      minimum:
+        required: true
+        range: SeverityLevel
+      maximum:
+        required: true
+        range: SeverityLevel
+
+enums:
+  SeverityLevel:
+    permissible_values:
+      low:
+        text: Low
+      medium:
+        text: Medium
+      high:
+        text: High
+      critical:
+        text: Critical
+
+  FailureCategory:
+    permissible_values:
+      specification_alignment:
+        text: Specification & Alignment
+      planning_control:
+        text: Planning & Control
+      tool_actuation:
+        text: Tool & Actuation
+      memory_knowledge_state:
+        text: Memory / Knowledge / State
+      monitoring_recovery:
+        text: Monitoring & Recovery
+      security_adversarial:
+        text: Security & Adversarial
+
