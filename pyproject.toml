@@ -1,0 +1,44 @@
+[build-system]
+requires = ["hatchling>=1.27"]
+build-backend = "hatchling.build"
+
+[project]
+name = "agentic-trace-analyzer"
+version = "0.1.0"
+description = "Ontology-backed analysis and classification for agentic AI session traces."
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+  "click>=8.1.8",
+  "linkml>=1.8.7",
+  "pyyaml>=6.0.2",
+]
+
+[project.scripts]
+agentic-trace-analyzer = "agentic_trace_analyzer.cli:main"
+
+[dependency-groups]
+dev = [
+  "pytest>=8.3.5",
+  "ruff>=0.11.2",
+]
+
+[tool.uv]
+package = true
+default-groups = ["dev"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/agentic_trace_analyzer"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+src = ["src", "tests"]
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["B", "E", "F", "I", "UP"]
+
