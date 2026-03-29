@@ -1,0 +1,52 @@
+{
+  "session": {
+    "timestamp": "2026-03-29T11:00:00Z",
+    "id": "legacy-456",
+    "cwd": "/tmp/legacy",
+    "cli_version": "0.50.0",
+    "instructions": "Legacy session fixture"
+  },
+  "items": [
+    {
+      "type": "message",
+      "role": "user",
+      "content": [
+        {
+          "type": "input_text",
+          "text": "show diff"
+        }
+      ]
+    },
+    {
+      "id": "reasoning_1",
+      "type": "reasoning",
+      "summary": [
+        {
+          "type": "summary_text",
+          "text": "Checking repository state"
+        }
+      ],
+      "duration_ms": 123
+    },
+    {
+      "id": "shell_1",
+      "type": "local_shell_call",
+      "status": "completed",
+      "action": {
+        "type": "exec",
+        "command": [
+          "bash",
+          "-lc",
+          "git diff"
+        ],
+        "working_directory": "/tmp/legacy"
+      },
+      "call_id": "legacy_call"
+    },
+    {
+      "type": "local_shell_call_output",
+      "call_id": "legacy_call",
+      "output": "{\"output\":\"diff --git a/file b/file\",\"metadata\":{\"exit_code\":0,\"duration_seconds\":0.2}}"
+    }
+  ]
+}
