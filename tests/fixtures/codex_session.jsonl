@@ -7,6 +7,6 @@
 {"timestamp":"2026-03-29T10:00:06Z","type":"response_item","payload":{"type":"function_call","name":"shell_command","arguments":"{\"command\":\"python -m demo\"}","call_id":"call_2"}}
 {"timestamp":"2026-03-29T10:00:07Z","type":"response_item","payload":{"type":"function_call_output","call_id":"call_2","output":"Exit code: 1\nTraceback (most recent call last):\nJSONDecodeError: Expecting value"}}
 {"timestamp":"2026-03-29T10:00:08Z","type":"event_msg","payload":{"type":"token_count","info":{"total_token_usage":{"total_tokens":850},"model_context_window":1000},"rate_limits":{"primary":{"used_percent":85.0}}}}
-{"timestamp":"2026-03-29T10:00:09Z","type":"turn_context","payload":{"cwd":"/tmp/demo","model":"gpt-5.2-mini","summary":"fallback"}}
+{"timestamp":"2026-03-29T10:00:09Z","type":"turn_context","payload":{"cwd":"/tmp/demo","model":"gpt-5.2-mini","summary":"falling back to gpt-5.2-mini"}}
 {"timestamp":"2026-03-29T10:00:10Z","type":"event_msg","payload":{"type":"context_compacted"}}
 {"timestamp":"2026-03-29T10:00:11Z","type":"response_item","payload":{"type":"message","role":"assistant","content":[{"type":"output_text","text":"Done. The fix is complete."}]}}

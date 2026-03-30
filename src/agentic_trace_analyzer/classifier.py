@@ -23,13 +23,29 @@ VALIDATION_PATTERN = re.compile(
 )
 TOOL_MISUSE_PATTERN = re.compile(
     r"("
-    r"schema|validation|jsondecodeerror|missing required|unexpected field|"
-    r"invalid argument|invalid args|tool_use_error|traceback"
+    r"jsondecodeerror|missing required|unexpected field|invalid argument|"
+    r"invalid args|tool_use_error"
+    r")",
+    re.IGNORECASE,
+)
+NON_SHELL_TOOL_MISUSE_PATTERN = re.compile(
+    r"("
+    r"file has not been read yet|string to replace not found|replace_all is false|"
+    r"illegal operation on a directory|not a directory|file does not exist"
     r")",
     re.IGNORECASE,
 )
 DEGRADATION_PATTERN = re.compile(
-    r"(fallback|degraded|best effort|reduced toolset|heuristic shortcut)",
+    r"("
+    r"falling back|fell back|fallback to|degraded mode|"
+    r"reduced toolset|heuristic shortcut"
+    r")",
+    re.IGNORECASE,
+)
+ASSISTANT_DEGRADATION_PATTERN = re.compile(
+    r"\b(i|we|it|the agent)\b.{0,40}\b("
+    r"falling back|fell back|degraded mode|reduced toolset|heuristic shortcut"
+    r")\b",
     re.IGNORECASE,
 )
 STATE_DESYNC_PATTERN = re.compile(
@@ -46,6 +62,7 @@ RESOURCE_PATTERN = re.compile(
     r")",
     re.IGNORECASE,
 )
+SHELL_LIKE_TOOL_NAMES = {"exec_command", "write_stdin", "shell_command", "bash"}
 
 
 @dataclass(slots=True)
@@ -204,12 +221,22 @@ def _detect_premature_termination(session: TraceSession) -> ClassificationFindin
 
 
 def _detect_tool_misuse(session: TraceSession) -> ClassificationFinding | None:
+    tool_calls = _tool_calls_by_call_id(session)
     matches = []
     for event in session.tool_results():
         searchable = "\n".join(
             filter(None, [_stringify(event.tool_output), _stringify(event.text)])
         )
-        if event.is_error and TOOL_MISUSE_PATTERN.search(searchable):
+        if not event.is_error or not searchable:
+            continue
+        paired_call = tool_calls.get(event.call_id or "")
+        tool_name = (paired_call.tool_name or "").lower() if paired_call else ""
+        explicit_interface_error = TOOL_MISUSE_PATTERN.search(searchable)
+        non_shell_misuse = (
+            tool_name not in SHELL_LIKE_TOOL_NAMES
+            and NON_SHELL_TOOL_MISUSE_PATTERN.search(searchable)
+        )
+        if explicit_interface_error or non_shell_misuse:
             matches.append(event)
 
     if not matches:
@@ -226,6 +253,31 @@ def _detect_tool_misuse(session: TraceSession) -> ClassificationFinding | None:
 
 
 def _detect_silent_degradation(session: TraceSession) -> ClassificationFinding | None:
+    matched_event: TraceEvent | None = None
+    for event in session.events:
+        if event.kind == "message" and event.role != "assistant":
+            continue
+        if event.kind == "tool_result" and not event.is_error:
+            continue
+        if event.kind not in {"context", "lifecycle", "message", "tool_result"}:
+            continue
+        searchable = "\n".join(
+            filter(None, [_stringify(event.text), _stringify(event.tool_output)])
+        )
+        if not searchable:
+            continue
+        pattern = (
+            ASSISTANT_DEGRADATION_PATTERN
+            if event.kind == "message"
+            else DEGRADATION_PATTERN
+        )
+        if pattern.search(searchable):
+            matched_event = event
+            break
+
+    if matched_event is None:
+        return None
+
     evidence = []
     if len(session.model_ids) > 1:
         evidence.append(
@@ -234,17 +286,7 @@ def _detect_silent_degradation(session: TraceSession) -> ClassificationFinding |
                 "models": session.model_ids,
             }
         )
-
-    for event in session.events:
-        searchable = "\n".join(
-            filter(None, [_stringify(event.text), _stringify(event.tool_output)])
-        )
-        if searchable and DEGRADATION_PATTERN.search(searchable):
-            evidence.append(_event_snapshot(event))
-            break
-
-    if not evidence:
-        return None
+    evidence.append(_event_snapshot(matched_event))
 
     rationale = (
         "The trace shows model or fallback behavior changes "
@@ -338,6 +380,14 @@ def _tool_results_by_call_id(session: TraceSession) -> dict[str, TraceEvent]:
         if event.call_id and event.call_id not in results:
             results[event.call_id] = event
     return results
+
+
+def _tool_calls_by_call_id(session: TraceSession) -> dict[str, TraceEvent]:
+    calls: dict[str, TraceEvent] = {}
+    for event in session.tool_calls():
+        if event.call_id and event.call_id not in calls:
+            calls[event.call_id] = event
+    return calls
 
 
 def _looks_like_validation_event(event: TraceEvent) -> bool:
