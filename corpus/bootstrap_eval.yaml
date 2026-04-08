@@ -1,0 +1,88 @@
+version: 1
+name: Bootstrap Trace Evaluation Corpus
+description: >
+  Small mixed corpus that combines reviewed local fixtures with a pair of directly
+  ingestible public GitHub trace exports.
+artifacts:
+  - id: fixture_codex
+    title: Fixture Codex session
+    locator:
+      kind: local_file
+      value: ../tests/fixtures/codex_session.jsonl
+    trace_format: codex_jsonl
+    source_name: repo_fixture
+    source_url: https://github.com/cmungall/agentic-trace-analyzer
+    access: local
+    license: internal-test
+    review_status: gold
+    expected_failure_modes:
+      - step_repetition_loop
+      - tool_misuse
+      - weak_fallback_silent_degradation
+    expected_absent_failure_modes:
+      - wrong_tool_selection
+    tags: [fixture, codex]
+    notes: Reviewed fixture that exercises several positive failure-mode detections.
+
+  - id: fixture_claude
+    title: Fixture Claude session
+    locator:
+      kind: local_file
+      value: ../tests/fixtures/claude_session.jsonl
+    trace_format: claude_jsonl
+    source_name: repo_fixture
+    source_url: https://github.com/cmungall/agentic-trace-analyzer
+    access: local
+    license: internal-test
+    review_status: gold
+    expected_failure_modes:
+      - tool_misuse
+    expected_absent_failure_modes:
+      - resource_exhaustion_agent_denial_of_service
+    tags: [fixture, claude]
+    notes: Minimal Claude fixture with an explicit tool-use interface error.
+
+  - id: fixture_codex_legacy
+    title: Fixture Codex legacy export
+    locator:
+      kind: local_file
+      value: ../tests/fixtures/codex_legacy.json
+    trace_format: codex_legacy_json
+    source_name: repo_fixture
+    source_url: https://github.com/cmungall/agentic-trace-analyzer
+    access: local
+    license: internal-test
+    review_status: gold
+    expected_absent_failure_modes:
+      - tool_misuse
+      - state_desynchronization_context_loss
+    tags: [fixture, codex, legacy]
+    notes: Negative-control fixture with no expected classifier findings.
+
+  - id: public_github_claude_sample
+    title: Public GitHub Claude JSONL export
+    locator:
+      kind: github_blob
+      value: https://github.com/pur3v4d3r/pur3-pkb-codebase/blob/44e917a4179e4a242857018352a155e9f51d2153/.claude/projects/d--10-pur3v4d3r-s-vault/agent-a2841a4.jsonl
+    trace_format: claude_jsonl
+    source_name: GitHub
+    source_url: https://github.com/pur3v4d3r/pur3-pkb-codebase
+    access: public
+    license: repo-specific
+    review_status: unreviewed
+    tags: [public, github, claude]
+    notes: Public raw Claude export usable as a realism sample.
+
+  - id: public_github_codex_sample
+    title: Public GitHub Codex JSONL export
+    locator:
+      kind: github_blob
+      value: https://github.com/jzila/canopy/blob/675af361c4d11dca599b7bfc96ab6f54a3dd0016/.codex/sessions/2026/02/01/rollout-2026-02-01T12-19-47-019c1a6e-b191-7f32-b8d5-8d213f5420d7.jsonl
+    trace_format: codex_jsonl
+    source_name: GitHub
+    source_url: https://github.com/jzila/canopy
+    access: public
+    license: repo-specific
+    review_status: unreviewed
+    tags: [public, github, codex]
+    notes: Public raw Codex export usable as a realism sample.

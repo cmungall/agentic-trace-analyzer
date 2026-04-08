@@ -6,5 +6,3 @@ from pathlib import Path
 
 SCHEMA_DIR = Path(__file__).resolve().parent
 SCHEMA_PATH = SCHEMA_DIR / "failure_modes.linkml.yaml"
-ONTOLOGY_PATH = SCHEMA_DIR / "failure_modes.yaml"
-

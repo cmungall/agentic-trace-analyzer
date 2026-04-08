@@ -7,3 +7,6 @@ dist/
 .ruff_cache/
 .pytest_cache/
 .DS_Store
+site/
+docs/reference/
+.cache/

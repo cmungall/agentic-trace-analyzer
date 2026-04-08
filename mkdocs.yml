@@ -1,0 +1,54 @@
+site_name: Agentic Trace Analyzer
+site_description: Ontology-backed analysis and classification for agentic AI session traces.
+site_url: http://127.0.0.1:8000
+repo_name: agentic-trace-analyzer
+repo_url: https://github.com/cmungall/agentic-trace-analyzer
+hooks:
+  - docs/hooks.py
+watch:
+  - src/agentic_trace_analyzer/schema/failure_modes.linkml.yaml
+  - docs/hooks.py
+
+theme:
+  name: material
+  features:
+    - content.action.edit
+    - navigation.sections
+    - navigation.expand
+    - navigation.indexes
+    - navigation.top
+    - content.code.copy
+  palette:
+    - scheme: default
+      primary: teal
+      accent: amber
+  icon:
+    repo: fontawesome/brands/github
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - def_list
+  - footnotes
+  - md_in_html
+  - tables
+  - pymdownx.details
+  - pymdownx.superfences
+  - toc:
+      permalink: true
+validation:
+  nav:
+    omitted_files: ignore
+
+nav:
+  - Home: index.md
+  - Failure Mode Taxonomy: failure-mode-taxonomy.md
+  - Trace Corpus: trace-corpus.md
+  - LinkML Reference:
+      - Overview: reference/index.md
+      - Classes: reference/classes.md
+      - Slots: reference/slots.md
+      - Enums: reference/enums.md
+      - Failure Modes: reference/failure-modes.md
+  - Appendix:
+      - Research Synthesis: research-synthesis.md

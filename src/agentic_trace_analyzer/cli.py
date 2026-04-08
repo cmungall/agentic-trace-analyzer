@@ -9,7 +9,10 @@ from typing import Any
 
 import click
 
+from agentic_trace_analyzer.adjudicator import adjudicate_manifest
 from agentic_trace_analyzer.classifier import ClassificationReport, classify_session
+from agentic_trace_analyzer.corpus import load_corpus_manifest, summarize_manifest
+from agentic_trace_analyzer.evaluation import evaluate_manifest, write_review_packets
 from agentic_trace_analyzer.ontology import load_ontology
 from agentic_trace_analyzer.parsers import (
     discover_trace_files,
@@ -119,6 +122,146 @@ def schema_command(include_data: bool) -> None:
     click.echo(schema_text.rstrip())
     click.echo("\n# Ontology Data")
     click.echo(ontology_text)
+
+
+@cli.group("corpus", help="Validate and evaluate trace corpus manifests.")
+def corpus_group() -> None:
+    """Corpus manifest subcommands."""
+
+
+@corpus_group.command("validate")
+@click.argument("manifest", type=click.Path(exists=True, path_type=Path))
+@click.option(
+    "--format",
+    "output_format",
+    type=click.Choice(["text", "json", "markdown"]),
+    default="text",
+    show_default=True,
+)
+def corpus_validate_command(manifest: Path, output_format: str) -> None:
+    """Validate a trace corpus manifest and summarize its coverage."""
+    corpus_manifest = load_corpus_manifest(manifest)
+    summary = summarize_manifest(corpus_manifest)
+    payload = {
+        "manifest": corpus_manifest.to_dict(),
+        "summary": summary,
+    }
+    click.echo(_render_corpus_manifest(corpus_manifest, summary, output_format, payload))
+
+
+@corpus_group.command("eval")
+@click.argument("manifest", type=click.Path(exists=True, path_type=Path))
+@click.option(
+    "--format",
+    "output_format",
+    type=click.Choice(["text", "json", "markdown"]),
+    default="text",
+    show_default=True,
+)
+@click.option("--limit", type=int, default=None)
+@click.option(
+    "--cache-dir",
+    type=click.Path(path_type=Path),
+    default=Path(".cache/trace-corpus"),
+    show_default=True,
+)
+@click.option(
+    "--emit-review-packets",
+    type=click.Path(path_type=Path),
+    default=None,
+    help="Write compact JSON packets for agent-assisted review.",
+)
+def corpus_eval_command(
+    manifest: Path,
+    output_format: str,
+    limit: int | None,
+    cache_dir: Path,
+    emit_review_packets: Path | None,
+) -> None:
+    """Evaluate classifier output against a trace corpus manifest."""
+    evaluation = evaluate_manifest(manifest, cache_dir=cache_dir, limit=limit)
+    written_packets = (
+        write_review_packets(evaluation, emit_review_packets) if emit_review_packets else []
+    )
+    payload = evaluation.to_dict()
+    if written_packets:
+        payload["review_packets"] = [str(path) for path in written_packets]
+    click.echo(_render_corpus_evaluation(evaluation, output_format, payload, written_packets))
+
+
+@corpus_group.command("adjudicate")
+@click.argument("manifest", type=click.Path(exists=True, path_type=Path))
+@click.option(
+    "--runner",
+    type=click.Choice(["codex", "claude", "command"]),
+    default="codex",
+    show_default=True,
+)
+@click.option(
+    "--command-template",
+    default=None,
+    help=(
+        "Command template for the `command` runner. "
+        "Supports {packet}, {prompt}, {schema}, {output}."
+    ),
+)
+@click.option("--model", default=None, help="Optional model name for Codex or Claude runners.")
+@click.option("--timeout-seconds", type=int, default=300, show_default=True)
+@click.option("--event-limit", type=int, default=120, show_default=True)
+@click.option("--limit", type=int, default=None)
+@click.option(
+    "--cache-dir",
+    type=click.Path(path_type=Path),
+    default=Path(".cache/trace-corpus"),
+    show_default=True,
+)
+@click.option(
+    "--packet-dir",
+    type=click.Path(path_type=Path),
+    default=None,
+    help="Optional directory to persist review packets.",
+)
+@click.option(
+    "--adjudication-dir",
+    type=click.Path(path_type=Path),
+    default=None,
+    help="Optional directory to persist agent adjudication JSON.",
+)
+@click.option(
+    "--format",
+    "output_format",
+    type=click.Choice(["text", "json", "markdown"]),
+    default="text",
+    show_default=True,
+)
+def corpus_adjudicate_command(
+    manifest: Path,
+    runner: str,
+    command_template: str | None,
+    model: str | None,
+    timeout_seconds: int,
+    event_limit: int,
+    limit: int | None,
+    cache_dir: Path,
+    packet_dir: Path | None,
+    adjudication_dir: Path | None,
+    output_format: str,
+) -> None:
+    """Run an external agent adjudicator over trace review packets."""
+    report = adjudicate_manifest(
+        manifest,
+        runner=runner,
+        cache_dir=cache_dir,
+        limit=limit,
+        packet_dir=packet_dir,
+        adjudication_dir=adjudication_dir,
+        command_template=command_template,
+        model=model,
+        timeout_seconds=timeout_seconds,
+        event_limit=event_limit,
+    )
+    payload = report.to_dict()
+    click.echo(_render_corpus_adjudication(report, output_format, payload))
 
 
 def _load_report_sessions(
@@ -245,6 +388,264 @@ def _render_aggregate_report(
 
     lines = ["Aggregate trace report:"]
     lines.extend(_aggregate_text_lines(reports))
+    return "\n".join(lines)
+
+
+def _render_corpus_manifest(
+    manifest: Any,
+    summary: dict[str, Any],
+    output_format: str,
+    payload: dict[str, Any],
+) -> str:
+    if output_format == "json":
+        return json.dumps(payload, indent=2, sort_keys=True)
+    if output_format == "markdown":
+        lines = [
+            f"# Trace Corpus Manifest: {manifest.name}",
+            "",
+            f"- Artifacts: `{summary['artifact_count']}`",
+            f"- Fetchable: `{summary['fetchable_artifact_count']}`",
+            f"- Reviewed: `{summary['reviewed_artifact_count']}`",
+            "",
+            "## Locator Kinds",
+        ]
+        if summary["locator_counts"]:
+            lines.extend(
+                f"- `{kind}`: `{count}`" for kind, count in summary["locator_counts"].items()
+            )
+        else:
+            lines.append("- None")
+        lines.extend(["", "## Artifacts"])
+        for artifact in manifest.artifacts:
+            lines.append(
+                f"- `{artifact.artifact_id}`: `{artifact.locator.kind}` "
+                f"({artifact.review_status})"
+            )
+        return "\n".join(lines)
+
+    lines = [
+        f"Trace corpus manifest: {manifest.name}",
+        f"Artifacts: {summary['artifact_count']}",
+        f"Fetchable: {summary['fetchable_artifact_count']}",
+        f"Reviewed: {summary['reviewed_artifact_count']}",
+        "Locator kinds:",
+    ]
+    if summary["locator_counts"]:
+        lines.extend(f"- {kind}: {count}" for kind, count in summary["locator_counts"].items())
+    else:
+        lines.append("- None")
+    lines.append("Artifacts:")
+    for artifact in manifest.artifacts:
+        lines.append(
+            f"- {artifact.artifact_id}: {artifact.locator.kind} ({artifact.review_status})"
+        )
+    return "\n".join(lines)
+
+
+def _render_corpus_evaluation(
+    evaluation: Any,
+    output_format: str,
+    payload: dict[str, Any],
+    written_packets: list[Path],
+) -> str:
+    summary = evaluation.summary()
+    if output_format == "json":
+        return json.dumps(payload, indent=2, sort_keys=True)
+    if output_format == "markdown":
+        lines = [
+            f"# Corpus Evaluation: {evaluation.manifest.name}",
+            "",
+            f"- Artifacts: `{summary['artifact_count']}`",
+            f"- Evaluated: `{summary['evaluated_count']}`",
+            f"- Reviewed: `{summary['reviewed_count']}`",
+            "",
+            "## Status Counts",
+        ]
+        if summary["status_counts"]:
+            lines.extend(
+                f"- `{status}`: `{count}`"
+                for status, count in summary["status_counts"].items()
+            )
+        else:
+            lines.append("- None")
+        lines.extend(["", "## Failure Mode Counts"])
+        if summary["failure_mode_counts"]:
+            lines.extend(
+                f"- `{mode_id}`: `{count}`"
+                for mode_id, count in summary["failure_mode_counts"].items()
+            )
+        else:
+            lines.append("- None")
+        if summary["missing_expected_counts"]:
+            lines.extend(["", "## Missing Expected Labels"])
+            lines.extend(
+                f"- `{mode_id}`: `{count}`"
+                for mode_id, count in summary["missing_expected_counts"].items()
+            )
+        if summary["violated_absent_counts"]:
+            lines.extend(["", "## Violated Absent Labels"])
+            lines.extend(
+                f"- `{mode_id}`: `{count}`"
+                for mode_id, count in summary["violated_absent_counts"].items()
+            )
+        lines.extend(["", "## Artifacts"])
+        for item in evaluation.artifacts:
+            finding_ids = (
+                ", ".join(finding.failure_mode_id for finding in item.report.findings)
+                if item.report
+                else "none"
+            )
+            lines.append(f"- `{item.artifact.artifact_id}` [{item.status}]: `{finding_ids}`")
+        if written_packets:
+            lines.extend(["", "## Review Packets"])
+            lines.extend(f"- `{path}`" for path in written_packets)
+        return "\n".join(lines)
+
+    lines = [
+        f"Corpus evaluation: {evaluation.manifest.name}",
+        f"Artifacts: {summary['artifact_count']}",
+        f"Evaluated: {summary['evaluated_count']}",
+        f"Reviewed: {summary['reviewed_count']}",
+        "Status counts:",
+    ]
+    if summary["status_counts"]:
+        lines.extend(
+            f"- {status}: {count}" for status, count in summary["status_counts"].items()
+        )
+    else:
+        lines.append("- None")
+    lines.append("Failure mode counts:")
+    if summary["failure_mode_counts"]:
+        lines.extend(
+            f"- {mode_id}: {count}"
+            for mode_id, count in summary["failure_mode_counts"].items()
+        )
+    else:
+        lines.append("- None")
+    if summary["missing_expected_counts"]:
+        lines.append("Missing expected labels:")
+        lines.extend(
+            f"- {mode_id}: {count}"
+            for mode_id, count in summary["missing_expected_counts"].items()
+        )
+    if summary["violated_absent_counts"]:
+        lines.append("Violated absent labels:")
+        lines.extend(
+            f"- {mode_id}: {count}"
+            for mode_id, count in summary["violated_absent_counts"].items()
+        )
+    lines.append("Artifacts:")
+    for item in evaluation.artifacts:
+        if item.report:
+            finding_ids = ", ".join(finding.failure_mode_id for finding in item.report.findings)
+            finding_text = finding_ids or "none"
+        else:
+            finding_text = item.error or "none"
+        lines.append(f"- {item.artifact.artifact_id} [{item.status}]: {finding_text}")
+    if written_packets:
+        lines.append("Review packets:")
+        lines.extend(f"- {path}" for path in written_packets)
+    return "\n".join(lines)
+
+
+def _render_corpus_adjudication(
+    report: Any,
+    output_format: str,
+    payload: dict[str, Any],
+) -> str:
+    summary = report.summary()
+    if output_format == "json":
+        return json.dumps(payload, indent=2, sort_keys=True)
+    if output_format == "markdown":
+        lines = [
+            f"# Corpus Adjudication: {report.evaluation.manifest.name}",
+            "",
+            f"- Runner: `{report.runner_name}`",
+            f"- Artifacts: `{summary['artifact_count']}`",
+            f"- Adjudicated: `{summary['adjudicated_count']}`",
+            f"- Reviewed: `{summary['reviewed_count']}`",
+            "",
+            "## Status Counts",
+        ]
+        if summary["status_counts"]:
+            lines.extend(
+                f"- `{status}`: `{count}`"
+                for status, count in summary["status_counts"].items()
+            )
+        else:
+            lines.append("- None")
+        lines.extend(["", "## Agent Failure Mode Counts"])
+        if summary["agent_failure_mode_counts"]:
+            lines.extend(
+                f"- `{mode_id}`: `{count}`"
+                for mode_id, count in summary["agent_failure_mode_counts"].items()
+            )
+        else:
+            lines.append("- None")
+        if summary["rule_only_counts"]:
+            lines.extend(["", "## Rule Only Counts"])
+            lines.extend(
+                f"- `{mode_id}`: `{count}`"
+                for mode_id, count in summary["rule_only_counts"].items()
+            )
+        if summary["agent_only_counts"]:
+            lines.extend(["", "## Agent Only Counts"])
+            lines.extend(
+                f"- `{mode_id}`: `{count}`"
+                for mode_id, count in summary["agent_only_counts"].items()
+            )
+        lines.extend(["", "## Artifacts"])
+        for item in report.artifacts:
+            finding_ids = ", ".join(finding.failure_mode_id for finding in item.findings) or "none"
+            lines.append(
+                f"- `{item.artifact_evaluation.artifact.artifact_id}` "
+                f"[{item.status}]: `{finding_ids}`"
+            )
+        return "\n".join(lines)
+
+    lines = [
+        f"Corpus adjudication: {report.evaluation.manifest.name}",
+        f"Runner: {report.runner_name}",
+        f"Artifacts: {summary['artifact_count']}",
+        f"Adjudicated: {summary['adjudicated_count']}",
+        f"Reviewed: {summary['reviewed_count']}",
+        "Status counts:",
+    ]
+    if summary["status_counts"]:
+        lines.extend(
+            f"- {status}: {count}" for status, count in summary["status_counts"].items()
+        )
+    else:
+        lines.append("- None")
+    lines.append("Agent failure mode counts:")
+    if summary["agent_failure_mode_counts"]:
+        lines.extend(
+            f"- {mode_id}: {count}"
+            for mode_id, count in summary["agent_failure_mode_counts"].items()
+        )
+    else:
+        lines.append("- None")
+    if summary["rule_only_counts"]:
+        lines.append("Rule only counts:")
+        lines.extend(
+            f"- {mode_id}: {count}"
+            for mode_id, count in summary["rule_only_counts"].items()
+        )
+    if summary["agent_only_counts"]:
+        lines.append("Agent only counts:")
+        lines.extend(
+            f"- {mode_id}: {count}"
+            for mode_id, count in summary["agent_only_counts"].items()
+        )
+    lines.append("Artifacts:")
+    for item in report.artifacts:
+        if item.findings:
+            finding_text = ", ".join(finding.failure_mode_id for finding in item.findings)
+        else:
+            finding_text = item.error or "none"
+        lines.append(
+            f"- {item.artifact_evaluation.artifact.artifact_id} [{item.status}]: {finding_text}"
+        )
     return "\n".join(lines)
 
 

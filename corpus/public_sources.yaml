@@ -1,0 +1,169 @@
+version: 1
+name: Public Agent Trace Source Catalog
+description: >
+  Public trace and trajectory sources researched on 2026-04-04. This catalog mixes
+  directly-ingestible artifacts with broader repositories and discovery surfaces.
+artifacts:
+  - id: traces_discover_feed
+    title: Traces public discover feed
+    locator:
+      kind: share_page
+      value: https://traces.com/discover
+    source_name: Traces
+    source_url: https://traces.com/discover
+    access: public
+    license: unknown
+    review_status: catalog
+    tags: [organic, coding-agent, public-feed]
+    notes: >
+      Best current source of organic public coding-agent sessions. Public trace pages
+      expose download actions, but a bulk public API was not confirmed.
+
+  - id: traces_codex_example
+    title: Traces public Codex example
+    locator:
+      kind: share_page
+      value: https://traces.com/s/jn71dsg9eth8brsdss77p11ja1840gq0
+    source_name: Traces
+    source_url: https://traces.com/s/jn71dsg9eth8brsdss77p11ja1840gq0
+    access: public
+    license: unknown
+    review_status: catalog
+    tags: [organic, codex, public]
+    notes: >
+      Concrete public trace page with Codex metadata and a visible Download control.
+      Good for manual sampling and future adapter work.
+
+  - id: opentraces_devtime
+    title: OpenTraces devtime dataset
+    locator:
+      kind: huggingface_dataset
+      value: https://huggingface.co/datasets/OpenTraces/opentraces-devtime
+    source_name: OpenTraces
+    source_url: https://www.opentraces.ai/
+    access: public
+    license: cc-by-4.0
+    review_status: catalog
+    tags: [dataset, structured, open]
+    notes: >
+      Public structured trace corpus intended for local-first parse, sanitize, review,
+      and publish workflows.
+
+  - id: github_public_claude_export
+    title: Public GitHub Claude JSONL export
+    locator:
+      kind: github_blob
+      value: https://github.com/pur3v4d3r/pur3-pkb-codebase/blob/44e917a4179e4a242857018352a155e9f51d2153/.claude/projects/d--10-pur3v4d3r-s-vault/agent-a2841a4.jsonl
+    source_name: GitHub
+    source_url: https://github.com/pur3v4d3r/pur3-pkb-codebase
+    access: public
+    license: repo-specific
+    review_status: catalog
+    tags: [github, claude, raw-export]
+    notes: >
+      Example of a raw Claude JSONL session committed directly to a public repository.
+      Directly ingestible by the current local_file/http/github_blob adapter set.
+
+  - id: github_public_codex_export
+    title: Public GitHub Codex JSONL export
+    locator:
+      kind: github_blob
+      value: https://github.com/jzila/canopy/blob/675af361c4d11dca599b7bfc96ab6f54a3dd0016/.codex/sessions/2026/02/01/rollout-2026-02-01T12-19-47-019c1a6e-b191-7f32-b8d5-8d213f5420d7.jsonl
+    source_name: GitHub
+    source_url: https://github.com/jzila/canopy
+    access: public
+    license: repo-specific
+    review_status: catalog
+    tags: [github, codex, raw-export]
+    notes: >
+      Example of a raw Codex rollout JSONL committed directly to a public repository.
+      Useful as an immediately-ingestible bootstrap sample.
+
+  - id: github_specstory_history
+    title: Public SpecStory history export
+    locator:
+      kind: github_blob
+      value: https://github.com/specstoryai/getspecstory/blob/49a3aab185384d923aa62baa0ad55787c336afb1/.specstory/history/2026-01-23_17-24-15Z-look-at-the-gh.md
+    source_name: GitHub
+    source_url: https://github.com/specstoryai/getspecstory
+    access: public
+    license: repo-specific
+    review_status: catalog
+    tags: [github, specstory, markdown]
+    notes: >
+      Public chat-history export in markdown. Valuable corpus source, but not parseable by
+      the current Claude/Codex JSONL parsers yet.
+
+  - id: neulab_agent_data_collection
+    title: neulab agent-data-collection
+    locator:
+      kind: huggingface_dataset
+      value: https://huggingface.co/datasets/neulab/agent-data-collection
+    source_name: Hugging Face
+    source_url: https://huggingface.co/datasets/neulab/agent-data-collection
+    access: public
+    license: mixed
+    review_status: catalog
+    tags: [dataset, benchmark, aggregator]
+    notes: >
+      Broad trajectory aggregator across software engineering, web, and other agent tasks.
+      Best scalable backfill source discovered in this research pass.
+
+  - id: swe_gym_openhands_sampled
+    title: SWE-Gym OpenHands sampled trajectories
+    locator:
+      kind: huggingface_dataset
+      value: https://huggingface.co/datasets/SWE-Gym/OpenHands-Sampled-Trajectories
+    source_name: SWE-Gym
+    source_url: https://huggingface.co/SWE-Gym
+    access: public
+    license: open
+    review_status: catalog
+    tags: [dataset, swe, benchmark]
+    notes: >
+      Software-engineering benchmark trajectories with strong relevance for failure-mode
+      evaluation, though less organic than day-to-day local agent logs.
+
+  - id: swe_rebench_openhands
+    title: Nebius SWE-rebench OpenHands trajectories
+    locator:
+      kind: huggingface_dataset
+      value: https://huggingface.co/datasets/nebius/SWE-rebench-openhands-trajectories
+    source_name: Hugging Face
+    source_url: https://huggingface.co/datasets/nebius/SWE-rebench-openhands-trajectories
+    access: public
+    license: open
+    review_status: catalog
+    tags: [dataset, swe, real-world]
+    notes: >
+      Large software-engineering corpus with explicit outcome fields such as resolved and
+      exit_status. Promising for supervised evaluation and failure slicing.
+
+  - id: itbench_trajectories
+    title: IBM ITBench trajectories
+    locator:
+      kind: huggingface_dataset
+      value: https://huggingface.co/datasets/ibm-research/ITBench-Trajectories
+    source_name: IBM Research
+    source_url: https://huggingface.co/datasets/ibm-research/ITBench-Trajectories
+    access: public
+    license: open
+    review_status: catalog
+    tags: [dataset, tool-use, benchmark]
+    notes: >
+      Complete ReAct-style trajectories with tools, outputs, and evaluation metrics.
+
+  - id: osworld_verified_trajs
+    title: OSWorld verified trajectories
+    locator:
+      kind: huggingface_dataset
+      value: https://huggingface.co/datasets/xlangai/ubuntu_osworld_verified_trajs
+    source_name: XLangAI
+    source_url: https://huggingface.co/datasets/xlangai/ubuntu_osworld_verified_trajs
+    access: public
+    license: open
+    review_status: catalog
+    tags: [dataset, computer-use, benchmark]
+    notes: >
+      Verified computer-use trajectories. Useful for recovery and control-loop failure
+      buckets, even though the action space differs from coding agents.

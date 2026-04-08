@@ -1,0 +1,42 @@
+version: 1
+name: Fixture Evaluation Corpus
+description: Small reviewed local corpus for unit tests.
+artifacts:
+  - id: fixture_codex
+    title: Fixture Codex session
+    locator:
+      kind: local_file
+      value: codex_session.jsonl
+    trace_format: codex_jsonl
+    review_status: gold
+    expected_failure_modes:
+      - step_repetition_loop
+      - tool_misuse
+    expected_absent_failure_modes:
+      - wrong_tool_selection
+    tags: [fixture, codex]
+
+  - id: fixture_claude
+    title: Fixture Claude session
+    locator:
+      kind: local_file
+      value: claude_session.jsonl
+    trace_format: claude_jsonl
+    review_status: gold
+    expected_failure_modes:
+      - tool_misuse
+    expected_absent_failure_modes:
+      - resource_exhaustion_agent_denial_of_service
+    tags: [fixture, claude]
+
+  - id: fixture_legacy
+    title: Fixture Codex legacy session
+    locator:
+      kind: local_file
+      value: codex_legacy.json
+    trace_format: codex_legacy_json
+    review_status: gold
+    expected_absent_failure_modes:
+      - tool_misuse
+      - state_desynchronization_context_loss
+    tags: [fixture, codex, legacy]

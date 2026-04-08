@@ -3,13 +3,14 @@ from agentic_trace_analyzer.ontology import load_ontology
 from agentic_trace_analyzer.schema import SCHEMA_PATH
 
 
-def test_schema_declares_required_enums() -> None:
+def test_schema_declares_root_tree_and_required_enum() -> None:
     schema_text = SCHEMA_PATH.read_text(encoding="utf-8")
     assert "SeverityLevel" in schema_text
-    assert "FailureCategory" in schema_text
+    assert "failure_mode:" in schema_text
+    assert "tree_root: true" in schema_text
 
 
-def test_ontology_has_six_categories_and_cross_references() -> None:
+def test_ontology_is_derived_from_class_tree() -> None:
     ontology = load_ontology()
     assert len(ontology["categories"]) == 6
 
@@ -33,4 +34,5 @@ def test_ontology_has_six_categories_and_cross_references() -> None:
         if category["id"] == "planning_control"
         for subtype in category["subtypes"]
     }
-
+    assert "degraded_mode" in weak_fallback["attributes"]
+    assert modes["tool_misuse"]["category"] == "tool_actuation"

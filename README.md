@@ -28,5 +28,19 @@ The ontology is modeled in LinkML (naturally) and serialized as OWL for reasonin
 - Python CLI + library
 - LinkML schema for the failure mode ontology
 - Trace parsers for Claude Code, Codex, OpenClaw session logs
-- Event classifiers (rule-based + LLM-assisted)
+- Event classifiers (rule-based baseline, agent-assisted review planned)
 - Integration with tp (tmux-pilot) for live trace analysis
+
+## Trace Corpus Workflow
+
+The repo now has a concrete corpus/evaluation layer for testing classification work against
+real traces instead of ad hoc examples.
+
+- `corpus/public_sources.yaml` tracks researched public trace sources and benchmark datasets
+- `corpus/bootstrap_eval.yaml` defines a small mixed evaluation set
+- `agentic-trace-analyzer corpus validate ...` checks manifest structure and coverage
+- `agentic-trace-analyzer corpus eval ...` resolves traces, runs the current classifier, and
+  compares results against reviewed labels when present
+- `--emit-review-packets` writes compact JSON packets for agent-assisted second-pass review
+- `agentic-trace-analyzer corpus adjudicate ...` runs a structured agent adjudicator via
+  `codex`, `claude`, or a custom command-template runner
