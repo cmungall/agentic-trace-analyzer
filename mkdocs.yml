@@ -1,6 +1,6 @@
 site_name: Agentic Trace Analyzer
 site_description: Ontology-backed analysis and classification for agentic AI session traces.
-site_url: http://127.0.0.1:8000
+site_url: https://cmungall.github.io/agentic-trace-analyzer
 repo_name: agentic-trace-analyzer
 repo_url: https://github.com/cmungall/agentic-trace-analyzer
 hooks:

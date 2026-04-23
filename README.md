@@ -52,3 +52,24 @@ real traces instead of ad hoc examples.
 - `--emit-review-packets` writes compact JSON packets for agent-assisted second-pass review
 - `agentic-trace-analyzer corpus adjudicate ...` runs a structured agent adjudicator via
   `codex`, `claude`, or a custom command-template runner
+
+## Documentation
+
+The docs are built with MkDocs in the standard LinkML project pattern and can be
+previewed locally with:
+
+```bash
+just gen-doc
+uv run mkdocs serve --dev-addr 127.0.0.1:8000
+```
+
+To publish manually to GitHub Pages:
+
+```bash
+just docs-deploy
+```
+
+The repo also includes `.github/workflows/deploy-docs.yaml`, modeled on the
+current LinkML project template, so pushes to `main` publish the site to the
+`gh-pages` branch. For the one-time repo setting, configure GitHub Pages to
+deploy from the `gh-pages` branch root.
