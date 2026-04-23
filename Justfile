@@ -7,7 +7,10 @@ sync:
     uv sync --all-groups
 
 gen-doc:
-    uv run mkdocs build --strict
+    mkdir -p docs/elements docs/schema
+    rm -f docs/elements/*.md docs/schema/*.yaml
+    cp src/agentic_trace_analyzer/schema/failure_modes.linkml.yaml docs/schema/failure_modes.linkml.yaml
+    uv run gen-doc --genmeta --sort-by rank -d docs/elements src/agentic_trace_analyzer/schema/failure_modes.linkml.yaml >/dev/null
 
 lint:
     uv run ruff check .
@@ -18,13 +21,13 @@ format:
 test:
     uv run pytest
 
-docs:
+docs: gen-doc
     uv run mkdocs build --strict
 
-docs-serve:
+docs-serve: gen-doc
     uv run mkdocs serve --dev-addr 127.0.0.1:8000
 
-docs-deploy:
+docs-deploy: gen-doc
     uv run mkdocs gh-deploy
 
 ci:

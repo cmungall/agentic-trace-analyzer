@@ -9,4 +9,7 @@ dist/
 .DS_Store
 site/
 docs/reference/
+docs/elements/*.md
+docs/schema/*.yaml
+docs/__pycache__/
 .cache/

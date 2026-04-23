@@ -15,8 +15,10 @@ This repo does two related things:
 
 The taxonomy is modeled directly as a LinkML class tree, so the docs can expose
 the actual schema hierarchy, enums, and leaf-class fields instead of just prose
-about them. The top-level dimensions follow the paper's five architectural
-fault dimensions; the leaf modes remain trace-focused adaptations.
+about them. The schema reference under `docs/elements/` is generated directly
+from the LinkML source with `gen-doc`, not hand-synced Markdown. The top-level
+dimensions follow the paper's five architectural fault dimensions; the leaf
+modes remain trace-focused adaptations.
 
 ## Documentation Map
 
@@ -34,17 +36,17 @@ fault dimensions; the leaf modes remain trace-focused adaptations.
 
     ---
 
-    Browse generated schema docs for classes, slots, enums, and ontology entries.
+    Browse the generated LinkML schema documentation.
 
-    [Open schema reference](reference/index.md)
+    [Open schema docs](elements/index.md)
 
 -   __Failure Mode Catalog__
 
     ---
 
-    See every concrete failure mode with triggers, signals, mitigations, and related modes.
+    Jump into the generated schema tree rooted at `FailureMode`.
 
-    [Open catalog](reference/failure-modes.md)
+    [Open root class](elements/FailureMode.md)
 
 -   __Research Appendix__
 

@@ -25,12 +25,12 @@ trace-observable runtime failures.
     - concrete descendant classes are trace failure modes
     - schema, class, enum, and permissible-value metadata carry source and alignment notes
     - class metadata carries severity, triggers, signals, mitigations, and relations
+    - generated schema docs in `docs/elements/` come directly from `gen-doc`
 
     The source of truth is:
 
     - `src/agentic_trace_analyzer/schema/failure_modes.linkml.yaml`
-
-    The MkDocs reference pages are generated from that schema file.
+    - `docs/elements/` after running `just gen-doc`
 
 ## Top-Level Categories
 
@@ -69,27 +69,26 @@ separate instance file. The hierarchy itself is the model.
 
     ---
 
-    See the schema structure, source files, and generated counts.
+    See the generated LinkML schema overview.
 
-    [Open schema reference](reference/index.md)
+    [Open schema docs](elements/index.md)
 
 -   __Enums__
 
     ---
 
-    Browse the LinkML enums, including the Shah et al. (2026) reference vocabularies
-    and the repo's local `SeverityLevel`.
+    Browse the generated enum docs, including the Shah et al. (2026)
+    reference vocabularies and the repo's local `SeverityLevel`.
 
-    [Open enum reference](reference/enums.md)
+    [Open `SeverityLevel`](elements/SeverityLevel.md)
 
 -   __Failure Mode Catalog__
 
     ---
 
-    See every concrete failure mode, grouped by category with triggers,
-    detection signals, mitigations, and related modes.
+    Explore the generated class hierarchy rooted at `FailureMode`.
 
-    [Open failure mode catalog](reference/failure-modes.md)
+    [Open `FailureMode`](elements/FailureMode.md)
 
 -   __Research Synthesis__
 

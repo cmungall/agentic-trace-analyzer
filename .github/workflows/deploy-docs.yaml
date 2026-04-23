@@ -49,8 +49,5 @@ jobs:
       - name: Install dependencies
         run: uv sync --dev --no-progress
 
-      - name: Generate schema documentation
-        run: just gen-doc
-
       - name: Publish to gh-pages
-        run: uv run mkdocs gh-deploy
+        run: just docs-deploy

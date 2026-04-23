@@ -48,7 +48,7 @@ imports:
   - linkml:types
 
 classes:
-  failure_mode:
+  FailureMode:
     abstract: true
     tree_root: true
     title: Failure Mode
@@ -57,8 +57,8 @@ classes:
       abstract children align to the five architectural fault dimensions in
       Shah et al. (2026).
 
-  agent_cognition_orchestration:
-    is_a: failure_mode
+  AgentCognitionOrchestration:
+    is_a: FailureMode
     abstract: true
     title: "Agent Cognition & Orchestration"
     description: >-
@@ -75,8 +75,8 @@ classes:
         tag: alignment_status
         value: paper_dimension
 
-  tooling_integration_actuation:
-    is_a: failure_mode
+  ToolingIntegrationActuation:
+    is_a: FailureMode
     abstract: true
     title: "Tooling, Integration & Actuation"
     description: >-
@@ -93,8 +93,8 @@ classes:
         tag: alignment_status
         value: paper_dimension
 
-  perception_context_memory:
-    is_a: failure_mode
+  PerceptionContextMemory:
+    is_a: FailureMode
     abstract: true
     title: "Perception, Context & Memory"
     description: >-
@@ -111,8 +111,8 @@ classes:
         tag: alignment_status
         value: paper_dimension
 
-  runtime_environment_grounding:
-    is_a: failure_mode
+  RuntimeEnvironmentGrounding:
+    is_a: FailureMode
     abstract: true
     title: "Runtime & Environment Grounding"
     description: >-
@@ -129,8 +129,8 @@ classes:
         tag: alignment_status
         value: paper_dimension
 
-  system_reliability_observability:
-    is_a: failure_mode
+  SystemReliabilityObservability:
+    is_a: FailureMode
     abstract: true
     title: "System Reliability & Observability"
     description: >-
@@ -147,8 +147,8 @@ classes:
         tag: alignment_status
         value: paper_dimension
 
-  weak_fallback_silent_degradation:
-    is_a: system_reliability_observability
+  WeakFallbackSilentDegradation:
+    is_a: SystemReliabilityObservability
     title: "Weak Fallback (Silent Degradation)"
     description: >-
       The agent silently enters a degraded operating mode such as a fallback
@@ -200,8 +200,8 @@ classes:
         description: >-
           Immediate trigger associated with the fallback activation.
 
-  choice_overload_premature_commitment:
-    is_a: agent_cognition_orchestration
+  ChoiceOverloadPrematureCommitment:
+    is_a: AgentCognitionOrchestration
     title: "Choice Overload (Premature Commitment)"
     description: >-
       Under a large branching factor, the agent commits too early to one plan,
@@ -242,8 +242,8 @@ classes:
           - "insufficient_planning_long_horizon_brittleness"
           - "premature_termination"
 
-  goal_intent_mismatch:
-    is_a: agent_cognition_orchestration
+  GoalIntentMismatch:
+    is_a: AgentCognitionOrchestration
     title: "Goal / Intent Mismatch"
     description: >-
       The agent forms an internal objective that differs from the user's real
@@ -284,8 +284,8 @@ classes:
           - "constraint_omission_policy_noncompliance"
           - "reasoning_action_mismatch"
 
-  constraint_omission_policy_noncompliance:
-    is_a: tooling_integration_actuation
+  ConstraintOmissionPolicyNoncompliance:
+    is_a: ToolingIntegrationActuation
     title: "Constraint Omission / Policy Noncompliance"
     description: >-
       The agent fails to model or enforce explicit constraints such as tool
@@ -334,8 +334,8 @@ classes:
           - "prompt_injection_indirect_instruction_hijacking"
           - "tool_misuse"
 
-  insufficient_planning_long_horizon_brittleness:
-    is_a: agent_cognition_orchestration
+  InsufficientPlanningLongHorizonBrittleness:
+    is_a: AgentCognitionOrchestration
     title: "Insufficient Planning / Long-Horizon Brittleness"
     description: >-
       The agent produces incomplete or fragile plans that fail under multi-step
@@ -376,8 +376,8 @@ classes:
           - "premature_termination"
           - "reasoning_action_mismatch"
 
-  premature_termination:
-    is_a: agent_cognition_orchestration
+  PrematureTermination:
+    is_a: AgentCognitionOrchestration
     title: "Premature Termination"
     description: >-
       The agent declares success or stops executing before the objective has
@@ -424,8 +424,8 @@ classes:
           Validator, test surface, or explicit completion check expected before
           termination.
 
-  step_repetition_loop:
-    is_a: agent_cognition_orchestration
+  StepRepetitionLoop:
+    is_a: AgentCognitionOrchestration
     title: "Step Repetition Loop"
     description: >-
       The agent repeats identical or cyclic actions without making progress,
@@ -475,8 +475,8 @@ classes:
         description: >-
           Number of repeated identical calls observed in the loop.
 
-  reasoning_action_mismatch:
-    is_a: agent_cognition_orchestration
+  ReasoningActionMismatch:
+    is_a: AgentCognitionOrchestration
     title: "Reasoning-Action Mismatch"
     description: >-
       The agent's stated plan or reasoning does not match the actions it
@@ -517,8 +517,8 @@ classes:
           - "tool_misuse"
           - "verification_failure"
 
-  multi_agent_coordination_breakdown:
-    is_a: agent_cognition_orchestration
+  MultiAgentCoordinationBreakdown:
+    is_a: AgentCognitionOrchestration
     title: "Multi-Agent Coordination Breakdown"
     description: >-
       Multiple agents fail to coordinate because of role violations, ignored
@@ -559,8 +559,8 @@ classes:
           - "observability_provenance_gaps"
           - "reasoning_action_mismatch"
 
-  wrong_tool_selection:
-    is_a: tooling_integration_actuation
+  WrongToolSelection:
+    is_a: ToolingIntegrationActuation
     title: "Wrong Tool Selection"
     description: >-
       The agent chooses an inappropriate tool for the task, even if the chosen
@@ -601,8 +601,8 @@ classes:
           - "reasoning_action_mismatch"
           - "constraint_omission_policy_noncompliance"
 
-  tool_misuse:
-    is_a: tooling_integration_actuation
+  ToolMisuse:
+    is_a: ToolingIntegrationActuation
     title: "Tool Misuse"
     description: >-
       The agent selects a plausible tool but invokes it with invalid arguments,
@@ -652,8 +652,8 @@ classes:
         description: >-
           Tool-interface or invocation error kind observed in the trace.
 
-  unsafe_tool_output_handling:
-    is_a: tooling_integration_actuation
+  UnsafeToolOutputHandling:
+    is_a: ToolingIntegrationActuation
     title: "Unsafe Tool-Output Handling"
     description: >-
       Tool outputs are treated as trusted instructions or executable content
@@ -694,8 +694,8 @@ classes:
           - "tool_misuse"
           - "unauthorized_actuation_permission_boundary_violation"
 
-  unauthorized_actuation_permission_boundary_violation:
-    is_a: tooling_integration_actuation
+  UnauthorizedActuationPermissionBoundaryViolation:
+    is_a: ToolingIntegrationActuation
     title: "Unauthorized Actuation / Permission Boundary Violation"
     description: >-
       The agent performs actions beyond its authorized scope, often because
@@ -736,8 +736,8 @@ classes:
           - "prompt_injection_indirect_instruction_hijacking"
           - "agent_compromise_instruction_hijack"
 
-  hallucination_fabricated_evidence:
-    is_a: perception_context_memory
+  HallucinationFabricatedEvidence:
+    is_a: PerceptionContextMemory
     title: "Hallucination / Fabricated Evidence"
     description: >-
       The agent generates incorrect facts, invented citations, or fabricated
@@ -778,8 +778,8 @@ classes:
           - "reasoning_action_mismatch"
           - "observability_provenance_gaps"
 
-  verification_failure:
-    is_a: system_reliability_observability
+  VerificationFailure:
+    is_a: SystemReliabilityObservability
     title: "Verification Failure"
     description: >-
       The agent performs no verification, incomplete verification, or incorrect
@@ -820,8 +820,8 @@ classes:
           - "weak_fallback_silent_degradation"
           - "hallucination_fabricated_evidence"
 
-  memory_poisoning_persistent_instruction_corruption:
-    is_a: perception_context_memory
+  MemoryPoisoningPersistentInstructionCorruption:
+    is_a: PerceptionContextMemory
     title: "Memory Poisoning / Persistent Instruction Corruption"
     description: >-
       Malicious or contaminated content is written into persistent memory so
@@ -870,8 +870,8 @@ classes:
           - "prompt_injection_indirect_instruction_hijacking"
           - "state_desynchronization_context_loss"
 
-  prompt_injection_indirect_instruction_hijacking:
-    is_a: perception_context_memory
+  PromptInjectionIndirectInstructionHijacking:
+    is_a: PerceptionContextMemory
     title: "Prompt Injection / Indirect Instruction Hijacking"
     description: >-
       Adversarial instructions in user input or retrieved third-party content
@@ -920,8 +920,8 @@ classes:
           - "agent_compromise_instruction_hijack"
           - "unauthorized_actuation_permission_boundary_violation"
 
-  state_desynchronization_context_loss:
-    is_a: perception_context_memory
+  StateDesynchronizationContextLoss:
+    is_a: PerceptionContextMemory
     title: "State Desynchronization / Context Loss"
     description: >-
       Conversation history, task state, or environment assumptions diverge from
@@ -968,8 +968,8 @@ classes:
           Explicit marker of conversation reset, context compaction, or state
           loss.
 
-  observability_provenance_gaps:
-    is_a: system_reliability_observability
+  ObservabilityProvenanceGaps:
+    is_a: SystemReliabilityObservability
     title: "Observability / Provenance Gaps"
     description: >-
       The system lacks the trace detail needed to explain, audit, or reproduce
@@ -1010,8 +1010,8 @@ classes:
           - "verification_failure"
           - "state_desynchronization_context_loss"
 
-  resource_exhaustion_agent_denial_of_service:
-    is_a: runtime_environment_grounding
+  ResourceExhaustionAgentDenialOfService:
+    is_a: RuntimeEnvironmentGrounding
     title: "Resource Exhaustion / Agent Denial of Service"
     description: >-
       The agent exhausts tokens, compute, time, or tool quotas, causing service
@@ -1064,8 +1064,8 @@ classes:
         description: >-
           Primary quota or rate-limit usage percentage.
 
-  agent_compromise_instruction_hijack:
-    is_a: tooling_integration_actuation
+  AgentCompromiseInstructionHijack:
+    is_a: ToolingIntegrationActuation
     title: "Agent Compromise / Instruction Hijack"
     description: >-
       The agent's control flow is hijacked by malicious instructions or
@@ -1114,8 +1114,8 @@ classes:
           - "unauthorized_actuation_permission_boundary_violation"
           - "targeted_knowledge_base_poisoning"
 
-  targeted_knowledge_base_poisoning:
-    is_a: perception_context_memory
+  TargetedKnowledgeBasePoisoning:
+    is_a: PerceptionContextMemory
     title: "Targeted Knowledge-Base Poisoning"
     description: >-
       External knowledge stores, retrieval corpora, or indexed artifacts are
@@ -1176,16 +1176,12 @@ enums:
         value: "Local operational metadata for agentic-trace-analyzer."
     permissible_values:
       low:
-        text: Low
         description: Low severity and typically limited blast radius.
       medium:
-        text: Medium
         description: Material impact that usually remains recoverable.
       high:
-        text: High
         description: Severe impact, elevated operator burden, or clear policy risk.
       critical:
-        text: Critical
         description: Irreversible, safety-critical, or system-compromising impact.
 
   Shah2026FaultDimension:
@@ -1198,35 +1194,30 @@ enums:
         value: "Shah et al. (2026), Figure 2 / Section 3.1.1"
     permissible_values:
       agent_cognition_orchestration:
-        text: Agent Cognition & Orchestration
         description: Faults intrinsic to an agent's cognitive architecture and control flow.
         annotations:
           paper_count:
             tag: paper_count
             value: 83
       tooling_integration_actuation:
-        text: Tooling, Integration & Actuation
         description: Faults at the boundary between agent plans and external tools, APIs, and systems.
         annotations:
           paper_count:
             tag: paper_count
             value: 66
       perception_context_memory:
-        text: Perception, Context & Memory
         description: Faults in input interpretation, context persistence, and memory/state handling.
         annotations:
           paper_count:
             tag: paper_count
             value: 72
       runtime_environment_grounding:
-        text: Runtime & Environment Grounding
         description: Faults rooted in dependencies, platform assumptions, and execution environments.
         annotations:
           paper_count:
             tag: paper_count
             value: 87
       system_reliability_observability:
-        text: System Reliability & Observability
         description: Faults that degrade robustness, diagnosability, or user-facing reliability.
         annotations:
           paper_count:
@@ -1243,91 +1234,78 @@ enums:
         value: "Shah et al. (2026), Table 1 / Section 3.1.2"
     permissible_values:
       data_validation_errors:
-        text: Data & Validation Errors
         description: Invalid schemas, malformed outputs, parsing failures, or unsafe data propagation.
         annotations:
           paper_count:
             tag: paper_count
             value: 75
       installation_dependency_issues:
-        text: Installation & Dependency Issues
         description: Installation failures, import errors, or dependency conflicts.
         annotations:
           paper_count:
             tag: paper_count
             value: 50
       execution_runtime_failures:
-        text: Execution & Runtime Failures
         description: Crashes, runtime exceptions, and failures during active task execution.
         annotations:
           paper_count:
             tag: paper_count
             value: 40
       code_quality_structure_issues:
-        text: Code Quality & Structure Issues
         description: Defects surfaced through linting, structural breakage, or implementation mistakes.
         annotations:
           paper_count:
             tag: paper_count
             value: 38
       agent_specific_issues:
-        text: Agent-Specific Issues
         description: Behavioural anomalies in planning, state, or control that are specific to agentic systems.
         annotations:
           paper_count:
             tag: paper_count
             value: 36
       error_handling:
-        text: Error Handling
         description: Missing, incorrect, or misleading exception handling and diagnostics.
         annotations:
           paper_count:
             tag: paper_count
             value: 31
       llm_specific_issues:
-        text: LLM-Specific Issues
         description: Symptoms tied to model outputs, token handling, or provider integration.
         annotations:
           paper_count:
             tag: paper_count
             value: 25
       connection_network_errors:
-        text: Connection & Network Errors
         description: Connectivity, authentication, or service-access failures.
         annotations:
           paper_count:
             tag: paper_count
             value: 21
       ui_related_issues:
-        text: UI-related Issues
         description: Incorrect or misleading presentation of state in user-facing interfaces.
         annotations:
           paper_count:
             tag: paper_count
             value: 17
       tool_function_call_issues:
-        text: Tool & Function Call Issues
         description: Malformed tool invocations, parameter issues, or unsupported calls.
         annotations:
           paper_count:
             tag: paper_count
             value: 16
       file_resource_errors:
-        text: File & Resource Errors
         description: Failures in file access, path handling, or other shared resource usage.
         annotations:
           paper_count:
             tag: paper_count
             value: 14
       documentation_issues:
-        text: Documentation Issues
         description: Outdated, incorrect, or misleading usage documentation.
         annotations:
           paper_count:
             tag: paper_count
             value: 5
       synchronisation_issues:
-        text: Synchronisation Issues
         description: Race conditions, interleaving defects, and parallel coordination errors.
         annotations:
           paper_count:
@@ -1345,84 +1323,72 @@ enums:
         value: "Shah et al. (2026), Table 2 / Section 3.1.3"
     permissible_values:
       dependency_integration_changes:
-        text: Dependency and Integration Changes
         description: Failures caused by evolving libraries, integrations, and platform dependencies.
         annotations:
           paper_count:
             tag: paper_count
             value: 73
       data_type_mismatch:
-        text: Data and Type Mismatch
         description: Mismatches between loosely structured data and strict program expectations.
         annotations:
           paper_count:
             tag: paper_count
             value: 66
       llm_behaviour_interface_changes:
-        text: LLM Behaviour and Interface Changes
         description: Provider-specific API drift, token behaviour, and configuration sensitivity.
         annotations:
           paper_count:
             tag: paper_count
             value: 49
       state_control_complexity:
-        text: State and Control Complexity
         description: Long-horizon control and internal-state complexity in adaptive agent behaviour.
         annotations:
           paper_count:
             tag: paper_count
             value: 48
       external_api_tool_changes:
-        text: External API and Tool Changes
         description: Changes or mismatches in external API contracts and tool behaviour.
         annotations:
           paper_count:
             tag: paper_count
             value: 38
       weak_error_handling_logging:
-        text: Weak Error Handling and Logging
         description: Poor exception handling, unclear messages, and suppressed diagnostics.
         annotations:
           paper_count:
             tag: paper_count
             value: 28
       configuration_complexity:
-        text: Configuration Complexity
         description: Fragility caused by defaults, schema drift, or missing config validation.
         annotations:
           paper_count:
             tag: paper_count
             value: 22
       resource_environment_limits:
-        text: Resource and Environment Limits
         description: Memory, storage, path-length, quota, or rate-limit constraints.
         annotations:
           paper_count:
             tag: paper_count
             value: 16
       architecture_design_issues:
-        text: Architecture and Design Issues
         description: Structural problems in abstractions, module organisation, or system design.
         annotations:
           paper_count:
             tag: paper_count
             value: 11
       outdated_incorrect_documentation:
-        text: Outdated or Incorrect Documentation
         description: Documentation that no longer matches interfaces, setup, or expected behaviour.
         annotations:
           paper_count:
             tag: paper_count
             value: 10
       access_control_credential_issues:
-        text: Access Control and Credential Issues
         description: Misconfigured permissions, invalid credentials, or missing secret validation.
         annotations:
           paper_count:
             tag: paper_count
             value: 8
       concurrency_synchronisation_complexity:
-        text: Concurrency and Synchronisation Complexity
         description: Race conditions and flawed synchronisation in shared-state or parallel workflows.
         annotations:
           paper_count:

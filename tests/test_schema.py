@@ -8,7 +8,8 @@ def test_schema_declares_root_tree_and_required_enum() -> None:
     assert "SeverityLevel" in schema_text
     assert "Shah2026FaultDimension" in schema_text
     assert "10.48550/arXiv.2603.06847" in schema_text
-    assert "failure_mode:" in schema_text
+    assert "FailureMode:" in schema_text
+    assert "AgentCognitionOrchestration:" in schema_text
     assert "tree_root: true" in schema_text
 
 

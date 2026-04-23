@@ -63,6 +63,10 @@ just gen-doc
 uv run mkdocs serve --dev-addr 127.0.0.1:8000
 ```
 
+The schema reference in `docs/elements/` is generated directly from
+`src/agentic_trace_analyzer/schema/failure_modes.linkml.yaml` via LinkML
+`gen-doc`, not maintained as hand-synced Markdown.
+
 To publish manually to GitHub Pages:
 
 ```bash

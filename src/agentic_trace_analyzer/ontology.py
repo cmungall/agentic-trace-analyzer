@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import re
 from functools import lru_cache
 from typing import Any
 
@@ -9,7 +10,8 @@ import yaml
 
 from agentic_trace_analyzer.schema import SCHEMA_PATH
 
-ROOT_CLASS = "failure_mode"
+ROOT_CLASS = "FailureMode"
+CAMEL_BOUNDARY = re.compile(r"(?<!^)(?=[A-Z])")
 
 
 @lru_cache(maxsize=1)
@@ -31,12 +33,12 @@ def load_ontology() -> dict[str, Any]:
     ]
     categories = [
         {
-            "id": category_id,
+            "id": _ontology_id(category_id, classes[category_id]),
             "name": _display_name(classes[category_id], category_id),
             "description": classes[category_id].get("description", ""),
-            "category": category_id,
+            "category": _ontology_id(category_id, classes[category_id]),
             "subtypes": [
-                class_name
+                _ontology_id(class_name, class_def)
                 for class_name, class_def in classes.items()
                 if (
                     not class_def.get("abstract")
@@ -81,10 +83,10 @@ def _failure_mode_entry(
 ) -> dict[str, Any]:
     annotations = class_def.get("annotations", {})
     return {
-        "id": class_name,
+        "id": _ontology_id(class_name, class_def),
         "name": _display_name(class_def, class_name),
         "description": class_def.get("description", ""),
-        "category": _top_category(class_name, classes),
+        "category": _ontology_id(_top_category(class_name, classes), classes[_top_category(class_name, classes)]),
         "severity_range": _annotation_value(annotations, "severity_range") or {},
         "typical_triggers": _annotation_value(annotations, "typical_triggers") or [],
         "detection_signals": _annotation_value(annotations, "detection_signals") or [],
@@ -95,7 +97,14 @@ def _failure_mode_entry(
 
 
 def _display_name(class_def: dict[str, Any], fallback: str) -> str:
-    return class_def.get("title") or fallback.replace("_", " ").title()
+    return class_def.get("title") or CAMEL_BOUNDARY.sub(" ", fallback).strip()
+
+
+def _ontology_id(class_name: str, class_def: dict[str, Any]) -> str:
+    del class_def
+    if "_" in class_name:
+        return class_name
+    return CAMEL_BOUNDARY.sub("_", class_name).lower()
 
 
 def _annotation_value(annotations: dict[str, Any], key: str) -> Any:
