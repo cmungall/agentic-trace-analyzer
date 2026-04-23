@@ -1,0 +1,1555 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Ontology-backed analysis and classification for agentic AI session traces.">
+      
+      
+      
+        <link rel="canonical" href="https://cmungall.github.io/agentic-trace-analyzer/research-synthesis/">
+      
+      
+        <link rel="prev" href="../reference/failure-modes/">
+      
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.6">
+    
+    
+      
+        <title>Research Synthesis - Agentic Trace Analyzer</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.484c7ddc.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="amber">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#taxonomies-of-failure-modes-for-agentic-ai-systems" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="Agentic Trace Analyzer" class="md-header__button md-logo" aria-label="Agentic Trace Analyzer" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Agentic Trace Analyzer
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Research Synthesis
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="amber"  aria-hidden="true"  type="radio" name="__palette" id="__palette_0">
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/cmungall/agentic-trace-analyzer" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    agentic-trace-analyzer
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="Agentic Trace Analyzer" class="md-nav__button md-logo" aria-label="Agentic Trace Analyzer" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Agentic Trace Analyzer
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/cmungall/agentic-trace-analyzer" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    agentic-trace-analyzer
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../failure-mode-taxonomy/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Failure Mode Taxonomy
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../trace-corpus/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Trace Corpus
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../reference/" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    LinkML Reference
+  
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    LinkML Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../reference/classes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Classes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../reference/slots/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Slots
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../reference/enums/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Enums
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../reference/failure-modes/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Failure Modes
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Appendix
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Appendix
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Research Synthesis
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Research Synthesis
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#executive-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Executive summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#definitions-and-scope" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Definitions and scope
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#methodology-for-literature-and-incident-review" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Methodology for literature and incident review
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#synthesized-taxonomy-of-failure-modes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Synthesized taxonomy of failure modes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#comparative-artifacts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Comparative artifacts
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Comparative artifacts">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#comparison-table-of-failure-modes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Comparison table of failure modes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#taxonomy-diagram-mermaid" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Taxonomy diagram (mermaid)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simple-charts-from-cited-case-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Simple charts from cited case data
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mitigation-priorities-across-dimensions-and-deployment-contexts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mitigation priorities across dimensions and deployment contexts
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Mitigation priorities across dimensions and deployment contexts">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cross-cutting-mitigation-principles-linked-to-the-taxonomy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cross-cutting mitigation principles linked to the taxonomy
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deployment-context-considerations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Deployment context considerations
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#research-and-standards-gaps-highlighted-by-the-review" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Research and standards gaps highlighted by the review
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#executive-summary" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Executive summary
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#definitions-and-scope" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Definitions and scope
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#methodology-for-literature-and-incident-review" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Methodology for literature and incident review
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#synthesized-taxonomy-of-failure-modes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Synthesized taxonomy of failure modes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#comparative-artifacts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Comparative artifacts
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Comparative artifacts">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#comparison-table-of-failure-modes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Comparison table of failure modes
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#taxonomy-diagram-mermaid" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Taxonomy diagram (mermaid)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#simple-charts-from-cited-case-data" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Simple charts from cited case data
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#mitigation-priorities-across-dimensions-and-deployment-contexts" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mitigation priorities across dimensions and deployment contexts
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Mitigation priorities across dimensions and deployment contexts">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#cross-cutting-mitigation-principles-linked-to-the-taxonomy" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cross-cutting mitigation principles linked to the taxonomy
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#deployment-context-considerations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Deployment context considerations
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#research-and-standards-gaps-highlighted-by-the-review" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Research and standards gaps highlighted by the review
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+    <a href="https://github.com/cmungall/agentic-trace-analyzer/edit/master/docs/research-synthesis.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="taxonomies-of-failure-modes-for-agentic-ai-systems">Taxonomies of Failure Modes for Agentic AI Systems<a class="headerlink" href="#taxonomies-of-failure-modes-for-agentic-ai-systems" title="Permanent link">&para;</a></h1>
+<blockquote>
+<p>Note:
+This appendix predates the current schema alignment work. The operational
+LinkML taxonomy used by this repo now aligns its top-level dimensions to
+Shah et al. (2026), while this appendix remains as the broader narrative
+synthesis that informed earlier versions.</p>
+</blockquote>
+<h2 id="executive-summary">Executive summary<a class="headerlink" href="#executive-summary" title="Permanent link">&para;</a></h2>
+<p>Agentic AI refers to AI systems that do more than produce outputs: they <em>pursue goals</em> by iterating through observation, planning, and action in an environment (digital or physical), often with tools, memory, and sometimes multiple cooperating agents. citeturn20view0turn12view0 In practice, modern “agentic” systems frequently combine an LLM-based reasoning core with tool invocation and long-horizon control loops, which introduces failure patterns that differ from standalone LLM chat or conventional deterministic software. citeturn2view0</p>
+<p>Across the current literature and incident-style evidence, four themes recur. First, autonomy and environmental “touch” amplify familiar model issues (hallucination, bias, misinterpretation) into higher-impact hazards because errors can propagate into downstream actions. citeturn12view0turn14view0turn2view0 Second, tool use and memory create new attack surfaces and new reliability problems (permission boundary violations, insecure output handling, prompt/knowledge/memory injection, state drift). citeturn0search2turn0search3turn11view4turn11view6 Third, multi-agent setups introduce coordination-specific failure modes (role/spec disobedience, information withholding, conversation resets, premature termination) with high observed prevalence in execution traces. citeturn15view0 Fourth, observability and recovery are not “nice-to-have”: multiple empirical sources emphasize weak error handling, limited logs, and unclear runtime signals as core contributors to diagnosing and preventing agent failures. citeturn2view0turn14view1turn11view5</p>
+<p>This report synthesizes these findings into a practical failure-mode taxonomy organized into six categories—Specification &amp; alignment; Planning &amp; control; Tool &amp; actuation; Memory/knowledge/state; Monitoring &amp; recovery; Security &amp; adversarial—and enumerates key subtypes. It explicitly includes the two user-provided example modes: <strong>weak fallback (silent degradation)</strong> and <strong>choice overload (premature commitment)</strong>.</p>
+<p>The most consistently high-severity modes in real deployments are (a) instruction hijacking (prompt/indirect injection) and downstream tool misuse; (b) memory/knowledge poisoning that persists across episodes; (c) unauthorized or irreversible actuation; (d) “verification gaps” (no/incorrect checking, unreliable evaluators); and (e) silent degradation/observability failures that prevent human oversight from working. citeturn0search2turn0search3turn11view4turn15view0turn14view2turn2view0</p>
+<h2 id="definitions-and-scope">Definitions and scope<a class="headerlink" href="#definitions-and-scope" title="Permanent link">&para;</a></h2>
+<p><strong>Working definition of agentic AI.</strong> Following the widely used framing in policy and industry, an AI agent (agentic AI) is an autonomous system that <em>senses/observes</em> and <em>acts</em> on its environment to achieve goals. citeturn20view0turn11view1 This report focuses on agentic systems with (at least) an iterative control loop and the ability to change environment state via tool calls, API actions, code execution, or physical instrumentation. citeturn14view0turn2view0</p>
+<p><strong>Agent capabilities that matter for failure analysis.</strong> A practical decomposition used in industry red-teaming distinguishes agentic capabilities that concentrate risk: autonomy, environment observation, environment interaction, memory, and collaboration. citeturn12view0 Agentic deployments also commonly vary by interaction pattern (user-driven vs event-driven), and by architecture (single-agent vs multi-agent; hierarchical vs collaborative). citeturn12view1</p>
+<p><strong>What is in scope.</strong><br />
+This report includes:
+- Tool-using LLM agents and frameworks (e.g., “Reason+Act” loops where reasoning and actions interleave). citeturn7search0turn2view0<br />
+- Multi-agent systems (MAS) where agents communicate, delegate, and jointly execute tasks. citeturn15view0turn12view1<br />
+- Deployed or experimentally demonstrated scientific/biomedical agents (chemistry automation; bioinformatics agents that query biological databases). citeturn3search0turn3search1turn4search12turn4search29<br />
+- Security and governance sources specifically addressing LLM/agent application risks. citeturn0search3turn6search1turn14view3turn5view0  </p>
+<p><strong>What is out of scope (explicitly).</strong><br />
+This report does <em>not</em> attempt a complete taxonomy of failures for all autonomous systems (robotics, classical planning, RL) independent of LLM-style agents; instead it focuses on agentic AI as currently deployed: LLM-centered with tools/memory/long-horizon workflows. citeturn2view0turn12view0</p>
+<p><strong>Failure mode definition.</strong><br />
+We use “failure mode” in the engineering sense: a recurring way a system can fail to perform its intended function such that effects and mitigations can be analyzed (an FMEA-style framing). citeturn6search3turn6search15 For agentic systems, a useful operational definition is “the agent does not achieve intended task objectives or violates constraints (safety, security, policy, or authorization).” citeturn15view0turn14view0</p>
+<h2 id="methodology-for-literature-and-incident-review">Methodology for literature and incident review<a class="headerlink" href="#methodology-for-literature-and-incident-review" title="Permanent link">&para;</a></h2>
+<p>This is a structured <em>narrative synthesis</em> (not a full systematic review), designed for a technical research audience (assumed because the user did not specify otherwise). Reporting follows PRISMA-style transparency norms for describing sources and inclusion logic, without claiming exhaustive coverage. citeturn6search2turn6search6</p>
+<p><strong>Source families reviewed.</strong><br />
+1) <strong>Primary taxonomies and empirical studies of agent failures.</strong><br />
+- Industry red-team taxonomy of agentic failure modes (safety vs security; novel vs amplified). citeturn11view1turn11view5turn11view6<br />
+- Empirical multi-agent failure taxonomy with prevalence estimates from annotated execution traces (MAST). citeturn15view0turn15view1<br />
+- Empirical software-engineering fault study analyzing 13,602 issues / PRs across 40 open-source agentic AI repositories, deriving fault/symptom/root-cause taxonomies and emphasizing cross-component fault propagation and observability gaps. citeturn2view0  </p>
+<p>2) <strong>Benchmarks and evaluations that surface agentic failure patterns (planning, recovery, robustness).</strong><br />
+- Web navigation environment showing low end-to-end success for LLM agents vs humans, and attributing limitations to missing exploration and failure recovery. citeturn17view0turn17view1<br />
+- Planning capability critiques and benchmarks indicating persistent planning weaknesses in LLMs on action/change reasoning tasks. citeturn8search4turn8search8turn8search32  </p>
+<p>3) <strong>Security standards and guidance for LLM/agent applications.</strong><br />
+- OWASP Top 10 for LLM applications (prompt injection, insecure output handling, model DoS, supply chain, etc.). citeturn0search3turn0search12<br />
+- Indirect prompt injection research demonstrating remote instruction injection via retrieved content and downstream impacts (e.g., data theft, tool/API manipulation). citeturn0search2turn0search5<br />
+- Adversarial AI threat modeling resources (ATLAS). citeturn6search1turn6search5  </p>
+<p>4) <strong>Incident databases and governance/policy resources.</strong><br />
+- Partnership on AI’s incident and failure-analysis resources, including the AI Incident Database (AIID) and a targeted report on real-time failure detection for agents. citeturn8search3turn14view0turn14view3<br />
+- NIST human–AI interaction risk management guidance as a governance lens for oversight roles/responsibilities. citeturn9search35<br />
+- Clinical deployment context via FDA guidance on Clinical Decision Support (CDS) software (relevant when agentic systems function as decision-support). citeturn5view0  </p>
+<p><strong>Synthesis method.</strong><br />
+The taxonomy below is synthesized by aligning failure modes across three complementary perspectives:<br />
+- <strong>Behavioral/task-level</strong> failures (what went wrong in planning/execution). citeturn14view0turn15view0turn17view0<br />
+- <strong>Component/software-level</strong> faults and propagation pathways (why it went wrong in the stack). citeturn2view0<br />
+- <strong>Safety/security governance</strong> risks and adversarial surfaces (how it can be exploited, and how controls fail). citeturn11view5turn0search2turn0search3turn6search1  </p>
+<p><strong>Severity/likelihood assessment approach.</strong><br />
+Severity and likelihood ratings are qualitative and context-dependent, calibrated to: (a) autonomy level and environment influence; (b) reversibility of actions; and (c) stakes of the domain—consistent with guidance that failure detection and controls should scale with these factors. citeturn14view2turn14view3turn12view0</p>
+<h2 id="synthesized-taxonomy-of-failure-modes">Synthesized taxonomy of failure modes<a class="headerlink" href="#synthesized-taxonomy-of-failure-modes" title="Permanent link">&para;</a></h2>
+<p>The taxonomy is organized into six categories (each mode also has cross-cutting “dimension impacts”: safety, reliability, interpretability, alignment; influenced by autonomy level, environment complexity, and human oversight load). Category boundaries are sometimes fuzzy in practice because planning, tool use, and execution are not always separable in real agent traces. citeturn14view0turn2view0</p>
+<p>Below, each failure mode includes: concise definition; typical triggers; representative examples (academic/real-world where available); root causes; detection signals/metrics; severity/likelihood; and prioritized mitigations (engineering, process, policy).</p>
+<p><strong>Weak fallback (silent degradation)</strong> <em>(Monitoring &amp; recovery; user-provided example)</em><br />
+<strong>Definition:</strong> The agent enters a degraded operating mode (fallback model, reduced toolset, cached/stale retrieval, heuristic shortcut) without explicit signaling to users/monitors, producing plausible but lower-quality or unsafe outputs.<br />
+<strong>Typical triggers:</strong> Tool/API failures, rate limits, token/compute constraints, partial outages, missing permissions, timeouts; “graceful degradation” paths that are not instrumented.<br />
+<strong>Examples:</strong> Empirical fault analysis of agentic AI software highlights that failures “do not fail transparently” when weak error handling and limited logging obscure underlying causes—conditions that strongly enable silent degradation. citeturn2view0 A complementary safety-oriented view notes that backups/fail-safe operation require detection to function properly—implying that undetected fallback undermines the purpose of fallback. citeturn14view2<br />
+<strong>Root causes:</strong> Broad exception catching; missing “degraded mode” state in telemetry; UI/UX that hides model/tool changes; lack of quality SLOs (success-only metrics).<br />
+<strong>Detection signals/metrics:</strong> Sudden shifts in tool-call rate or success; changes in model/tool identifiers; spikes in “best-effort” responses; divergence between offline eval and online outcomes; increased variance across repeated runs (run-to-run reliability drops). citeturn2view0turn14view3<br />
+<strong>Severity/Likelihood:</strong> Severity <strong>Medium→Critical</strong> (critical in clinical/industrial contexts); likelihood <strong>Common</strong> in production-grade systems with failover paths.<br />
+<strong>Mitigations (prioritized):</strong><br />
+Engineering: explicit degraded-mode flagging; hard “stop-and-escalate” rules for high-stakes tasks; dual-channel outputs (answer + confidence/provenance); fallback-specific evals. citeturn14view3turn9search35<br />
+Process: incident playbooks for degraded mode; chaos testing for partial outages; post-incident root-cause tracking (not just outcome logging). citeturn2view0turn14view3<br />
+Policy: disclosure requirements for degraded operation in regulated workflows; auditability expectations tied to stakes and reversibility. citeturn14view3turn5view0  </p>
+<p><strong>Choice overload (premature commitment)</strong> <em>(Specification &amp; planning; user-provided example)</em><br />
+<strong>Definition:</strong> Under large branching factor (many plausible plans/tools/interpretations), the agent commits early to a suboptimal option without sufficient exploration, leading to brittle trajectories and unrecoverable errors.<br />
+<strong>Typical triggers:</strong> Ambiguous goals; high-dimensional action spaces; long-horizon tasks; missing “explore vs exploit” logic; budgeted reasoning causing early stopping.<br />
+<strong>Examples:</strong> Tree-of-Thoughts was proposed specifically because token-by-token greedy inference “can fall short” when tasks require exploration/strategic lookahead and when early decisions are pivotal; ToT explicitly enables exploring multiple reasoning paths and backtracking to avoid premature commitment. citeturn7search1turn7search5 WebArena likewise hypothesizes that low agent success stems from missing capabilities such as “active exploration and failure recovery” in complex tasks. citeturn17view0turn17view1<br />
+<strong>Root causes:</strong> Single-trajectory prompting; weak self-evaluation; no mechanism for backtracking; insufficient uncertainty modeling; search/verification not integrated into control loop.<br />
+<strong>Detection signals/metrics:</strong> Low “plan diversity” (single plan generated); high regret (frequent late re-plans); early tool lock-in; low sensitivity to new evidence; repeated failures on tasks with similar branching factor and long horizon. citeturn17view0turn7search1<br />
+<strong>Severity/Likelihood:</strong> Severity <strong>Medium→High</strong>; likelihood <strong>Common</strong> in open-ended tool-rich tasks.<br />
+<strong>Mitigations:</strong><br />
+Engineering: deliberative inference (ToT-like search), reject options for tool selection, explicit “explore budget,” and backtracking checkpoints. citeturn7search1turn7search3<br />
+Process: ambiguity tests; eval sets with many plausible solution paths; stress tests on branching-factor growth. citeturn17view1<br />
+Policy: require human confirmation when decision irreversibility is high (especially in clinical/industrial automation). citeturn14view2turn5view0  </p>
+<p><strong>Goal/intent mismatch</strong> <em>(Specification &amp; alignment)</em><br />
+<strong>Definition:</strong> The agent’s internal objective differs from the user’s true intent (misinterprets “what success means”), producing a plan that is locally coherent but globally wrong.<br />
+<strong>Typical triggers:</strong> Vague prompts; missing domain constraints; shorthand language; hidden user preferences; conflicting goals among stakeholders.<br />
+<strong>Examples:</strong> A failure-detection report lists “plan inconsistent with user intent” as a primary planning failure mode for agents, emphasizing it as a live operational hazard. citeturn14view0turn14view3<br />
+<strong>Root causes:</strong> Incomplete task specification; lack of clarification-seeking; misalignment between reward/heuristics and user goals; context window omissions.<br />
+<strong>Detection signals/metrics:</strong> High clarification deficit (agent proceeds with low information); mismatch between requirement extraction and final actions; high rate of user corrections/undo actions; semanticdiff between stated intent and executed plan steps. citeturn15view0turn14view3<br />
+<strong>Severity/Likelihood:</strong> Severity <strong>Medium→Critical</strong> depending on domain; likelihood <strong>Common</strong>, especially with higher autonomy. citeturn12view0turn14view2<br />
+<strong>Mitigations:</strong><br />
+Engineering: structured intent elicitation; “fail-closed” when intent is underspecified; preference/constraint schemas; interactive planning with confirmations for irreversible steps. citeturn14view2turn12view1<br />
+Process: user studies on intent expression; red-team ambiguous requirements; logs that preserve intent extraction steps (provenance). citeturn14view3turn2view0<br />
+Policy: domain policy templates (clinical/industrial) specifying minimum user intent fields. citeturn5view0turn14view3  </p>
+<p><strong>Constraint omission and policy noncompliance</strong> <em>(Specification &amp; governance)</em><br />
+<strong>Definition:</strong> The agent fails to model or enforce explicit constraints (tool permissions, safety policies, regulatory rules), generating plans that exceed authorized or acceptable boundaries.<br />
+<strong>Typical triggers:</strong> Tools with vaguely specified interfaces; overlapping tool capabilities; missing permission checks; policy-as-text only (non-executable constraints).<br />
+<strong>Examples:</strong> Agents commonly face “plan exceeds tool permissions or other constraints” and “executing actions beyond authorized boundaries,” and these are treated as core failure scenarios in real-time failure detection discussions. citeturn14view0turn14view3<br />
+<strong>Root causes:</strong> Lack of executable policy layer; inadequate authorization integration; weak action gating; poor separation between untrusted content and instructions. citeturn0search2turn0search3<br />
+<strong>Detection signals/metrics:</strong> Authorization denials; policy-violation flags; anomalous resource access patterns; “capability overreach” (tools used outside task needs). citeturn14view0turn0search3<br />
+<strong>Severity/Likelihood:</strong> Severity <strong>High→Critical</strong>; likelihood <strong>Uncommon→Common</strong> depending on permissioning maturity.<br />
+<strong>Mitigations:</strong><br />
+Engineering: least-privilege tool scopes; typed, capability-based tool APIs; policy engines that can block/require approval; sandboxing for code/IO. citeturn14view3turn0search3turn6search1<br />
+Process: pre-deployment access reviews; scenario-based audits; compliance-driven evaluation. citeturn5view0turn9search35<br />
+Policy: enforce audit logs and “chain of events” reporting expectations for high-risk use cases. citeturn14view3turn5view0  </p>
+<p><strong>Insufficient planning and long-horizon brittleness</strong> <em>(Planning &amp; control)</em><br />
+<strong>Definition:</strong> The agent produces incomplete or fragile plans that fail under multi-step dependencies and real-world complexity, often without recovery.<br />
+<strong>Typical triggers:</strong> Long-horizon tasks; dynamic environments; partial observability; multi-tool workflows; long context histories.<br />
+<strong>Examples:</strong> WebArena reports only <strong>14.41%</strong> end-to-end task success for the best GPT-4-based agent versus <strong>78.24%</strong> for humans, and attributes limited performance to missing active exploration and failure recovery in complex tasks. citeturn17view0turn17view1 Planning benchmarks likewise find “dismal” performance in LLM planning/reasoning about action and change. citeturn8search4turn8search8turn8search32<br />
+<strong>Root causes:</strong> Weak world models; no explicit state tracking; inability to represent preconditions/effects; insufficient tool feedback integration.<br />
+<strong>Detection signals/metrics:</strong> High replanning frequency; increasing plan–execution divergence over time; failure clustering on dependency depth; rising “stuck” rates. citeturn14view0turn17view0<br />
+<strong>Severity/Likelihood:</strong> Severity <strong>Medium→High</strong>; likelihood <strong>Common</strong> for complex environments.<br />
+<strong>Mitigations:</strong><br />
+Engineering: structured planning representations; tool-grounded ReAct-style loops; checkpointing and rollback; explicit failure recovery policies. citeturn7search0turn17view0turn14view2<br />
+Process: benchmark on long-horizon tasks (WebArena-like); repeated-run reliability evaluation; postmortems that analyze trajectory, not just outcome. citeturn17view0turn14view3<br />
+Policy: prohibit full autonomy for irreversible actions without confirmation. citeturn14view2turn5view0  </p>
+<p><strong>Premature termination and step repetition loops</strong> <em>(Planning &amp; control)</em><br />
+<strong>Definition:</strong> The agent stops early (declares done without meeting objective) or loops by repeating steps, consuming resources and sometimes causing repeated side effects.<br />
+<strong>Typical triggers:</strong> Budget constraints; inconsistent termination conditions; weak progress metrics; tool errors that are misinterpreted as success.<br />
+<strong>Examples:</strong> In MAST (multi-agent failure taxonomy), “step repetition” and “premature termination” are explicit failure modes, with reported prevalence across analyzed traces. citeturn15view0<br />
+<strong>Root causes:</strong> No termination criteria; missing state deltas; reward/utility miscalibration; inadequate loop detection. citeturn2view0turn15view0<br />
+<strong>Detection signals/metrics:</strong> Repeated identical tool calls; cyclic action sequences; unchanged environment state across steps; “done” claims without validator success. citeturn15view0turn17view0<br />
+<strong>Severity/Likelihood:</strong> Severity <strong>Low→High</strong> (higher when actions have side effects); likelihood <strong>Common</strong> in brittle agent scaffolds.<br />
+<strong>Mitigations:</strong><br />
+Engineering: loop detectors; hard caps on repeated actions; validator-gated completion; resource budgets with safe abort + escalation. citeturn15view0turn14view3<br />
+Process: failure-mode tests with adversarial “near-complete” tasks; require evidence of completion. citeturn15view0turn17view0<br />
+Policy: cost/latency governance; mandatory human review for repeated high-impact operations. citeturn14view2turn9search35  </p>
+<p><strong>Reasoning–action mismatch</strong> <em>(Planning &amp; execution)</em><br />
+<strong>Definition:</strong> The agent’s stated reasoning/plan does not match its executed actions (e.g., claims to do X but does Y), reducing trust and increasing hazard.<br />
+<strong>Typical triggers:</strong> Tool-call formatting errors; latent instruction overrides; hallucinated tool outputs; UI mismatch between plan and execution.<br />
+<strong>Examples:</strong> MAST includes “Reasoning–Action Mismatch” as a distinct, observed failure mode in multi-agent traces. citeturn15view0<br />
+<strong>Root causes:</strong> Tool interface mismatch; incomplete grounding between natural language and action schema; nondeterminism from LLM sampling; instrumentation gaps. citeturn2view0turn7search0<br />
+<strong>Detection signals/metrics:</strong> Plan–execution divergence metric; semantic consistency checks between plan text and tool calls; audit-trail discrepancies. citeturn14view1turn11view2<br />
+<strong>Severity/Likelihood:</strong> Severity <strong>Medium→High</strong>; likelihood <strong>Uncommon→Common</strong> depending on tool richness.<br />
+<strong>Mitigations:</strong><br />
+Engineering: typed function calling; constrained decoding; “executable plans” (machine-checkable); trace-based monitors. citeturn0search3turn14view1<br />
+Process: differential testing across seeds; require logged tool-call arguments and outcomes. citeturn2view0turn14view3<br />
+Policy: audit requirements for regulated use (clinical, safety-critical). citeturn5view0turn14view3  </p>
+<p><strong>Multi-agent coordination breakdown</strong> <em>(Planning &amp; coordination)</em><br />
+<strong>Definition:</strong> In MAS, agents fail to coordinate due to role/spec violations, ignored inputs, information withholding, or conversation state loss—leading to deadlocks, wrong outputs, or unsafe emergent behavior.<br />
+<strong>Typical triggers:</strong> Ambiguous role definitions; conflicting agent incentives; missing shared memory protocols; long dialogues; weak arbitration.<br />
+<strong>Examples:</strong> MAST organizes MAS failures into categories including “system design issues” and “inter-agent misalignment,” with concrete submodes such as disobeying role/task specifications, loss of conversation history, ignored input, and information withholding. citeturn15view0turn15view2 The same study reports overall failure rates between <strong>41% and 86.7%</strong> on evaluated open-source MAS across multiple tasks—underscoring reliability risk in current multi-agent designs. citeturn15view0<br />
+<strong>Root causes:</strong> No shared ground truth; weak communication protocols; lack of consensus mechanisms; hidden state and poor observability in agent-to-agent exchanges. citeturn2view0turn14view1<br />
+<strong>Detection signals/metrics:</strong> Inter-agent contradiction rate; clarification-request deficit; conversation resets; divergence in agent beliefs; consensus failure counters. citeturn15view0turn14view0<br />
+<strong>Severity/Likelihood:</strong> Severity <strong>Medium→Critical</strong> (critical when agents can act); likelihood <strong>Common</strong> in MAS at current maturity. citeturn15view0turn12view1<br />
+<strong>Mitigations:</strong><br />
+Engineering: explicit protocols (roles, turn-taking, arbitration); shared state with versioning; validators and a “supervisor” agent with authority-limited tools. citeturn12view1turn15view0<br />
+Process: MAS-specific evaluations (trace analysis, staged failure injection); red-team emergent behaviors. citeturn15view1turn11view2<br />
+Policy: require human oversight proportional to autonomy level; define accountability across agent boundaries. citeturn14view3turn9search35  </p>
+<p><strong>Wrong tool selection and tool misuse</strong> <em>(Tool &amp; actuation)</em><br />
+<strong>Definition:</strong> The agent selects an inappropriate tool or misuses a correct tool (format/arguments/sequence errors), often cascading into incorrect or unsafe actions.<br />
+<strong>Typical triggers:</strong> Overlapping tools; unclear tool descriptions; weak tool-choice training; partial observability (agent “guesses” parameters).<br />
+<strong>Examples:</strong> Failure-detection guidance lists “selecting the wrong tool,” “misusing the tool,” and tools causing unintended side effects among core agent failure modes. citeturn14view0turn14view1 Work on tool selection improvements explicitly introduces a “Reject” option to mitigate tool misuse (decline tool calls when uncertain). citeturn7search11turn7search3<br />
+<strong>Root causes:</strong> Contract mismatch between probabilistic generation and deterministic API schemas; integration failures and type/validation errors are dominant root-cause classes in large-scale fault analyses of agentic AI software. citeturn2view0turn14view0<br />
+<strong>Detection signals/metrics:</strong> Schema validation errors; tool-call retry loops; argument out-of-range; tool-failure clustering by endpoint; rising “unknown” fields. citeturn14view0turn2view0<br />
+<strong>Severity/Likelihood:</strong> Severity <strong>Medium→Critical</strong> depending on tool power; likelihood <strong>Common</strong>.<br />
+<strong>Mitigations:</strong><br />
+Engineering: strict schemas + static checks; tool simulators; “reject / ask human” branch; least-privilege, capability-scoped tools. citeturn7search11turn14view3turn6search1<br />
+Process: tool-contract tests; canary deployment on tool changes; benchmark tool-use under noise and distribution shift. citeturn2view0turn8search6<br />
+Policy: require tool access justification and logging for sensitive tools (clinical, industrial controls). citeturn5view0turn14view3  </p>
+<p><strong>Unsafe tool-output handling</strong> <em>(Tool security; OWASP-style application risk)</em><br />
+<strong>Definition:</strong> The system treats tool outputs as trusted instructions or executable content (e.g., rendering HTML/JS, executing code, writing to files/DB) without sanitization and provenance checks, enabling injection-style exploits or downstream corruption.<br />
+<strong>Typical triggers:</strong> “LLM output → executor” pipelines; retrieval-augmented browsing; code-writing agents; automated email/workflow actions.<br />
+<strong>Examples:</strong> OWASP identifies insecure output handling as a top LLM-application risk, highlighting downstream execution and injection pathways. citeturn0search3 Indirect prompt injection work demonstrates the blurred line between data and instructions in LLM-integrated applications, enabling remote exploitation when retrieved content is treated instructionally. citeturn0search2turn0search5<br />
+<strong>Root causes:</strong> Missing trust boundaries; unsafe templating; absent output encoding; no sandbox for code/commands.<br />
+<strong>Detection signals/metrics:</strong> Detection of executable tokens/patterns in outputs; anomalous file writes or network calls; security scanning alerts; discrepancies between tool output provenance and used instructions. citeturn0search3turn14view1<br />
+<strong>Severity/Likelihood:</strong> Severity <strong>High→Critical</strong>; likelihood <strong>Uncommon→Common</strong> (higher in browsing/code-execution agents).<br />
+<strong>Mitigations:</strong><br />
+Engineering: sanitize/escape outputs; content-security policies; sandbox execution; explicit “data vs instruction” separators. citeturn0search3turn0search2<br />
+Process: appsec threat modeling using OWASP/ATLAS; red-team tool chains. citeturn0search3turn6search1<br />
+Policy: security review gates for any agent that can execute code or mutate critical assets. citeturn14view3turn6search1  </p>
+<p><strong>Unauthorized actuation and permission boundary violations</strong> <em>(Tool &amp; environment interaction)</em><br />
+<strong>Definition:</strong> The agent performs actions beyond its authorized scope (data access, transactions, configuration changes), often due to weak auth integration or instruction hijacking.<br />
+<strong>Typical triggers:</strong> Overbroad credentials; shared service accounts; missing action confirmation; insecure plugin/tool ecosystems.<br />
+<strong>Examples:</strong> Execution failures explicitly include “executing actions beyond authorized boundaries,” and tool-use failures include “tool accesses resources beyond task needs.” citeturn14view0turn14view3<br />
+<strong>Root causes:</strong> Poor identity/permission design; failure to enforce “need-to-know”; action gating treated as prompt text rather than enforced policy. citeturn6search1turn0search3<br />
+<strong>Detection signals/metrics:</strong> Anomalous access patterns; privilege escalation indicators; policy-engine denials; high-entropy resource access (agent “roams”). citeturn14view0turn6search1<br />
+<strong>Severity/Likelihood:</strong> Severity <strong>Critical</strong>; likelihood <strong>Uncommon→Common</strong> depending on privilege hygiene.<br />
+<strong>Mitigations:</strong><br />
+Engineering: principle of least privilege; per-action authorization; escrowed credentials; irreversible-action confirmations; segmented environments. citeturn14view3turn6search1<br />
+Process: access reviews; secrets-management; incident response drills for agent credentials. citeturn14view3turn6search1<br />
+Policy: enforce audit logging and retention, especially in high-risk sectors. citeturn14view3turn5view0  </p>
+<p><strong>Hallucination and fabricated evidence</strong> <em>(Memory/knowledge; reliability; interpretability)</em><br />
+<strong>Definition:</strong> The agent generates incorrect factual content, invented citations, or fabricated intermediate “evidence,” which can mislead downstream reasoning and actions.<br />
+<strong>Typical triggers:</strong> Open-domain queries without grounding; biomedical nomenclature; long-horizon summarization; citation generation.<br />
+<strong>Examples (bioinformatics/biomed):</strong> A genomic benchmarking study reports extremely high hallucination/error rates in gene name conversion tasks for certain LLM settings (e.g., near-total error without web grounding in one reported configuration). citeturn4search0 In medical writing contexts, work proposes quantitative scoring of reference hallucinations because fabricated citations are a recurrent risk. citeturn4search2<br />
+<strong>Root causes:</strong> Training-data gaps; confabulation under uncertainty; retrieval mismatch; lack of provenance tracking. citeturn4search8turn2view0<br />
+<strong>Detection signals/metrics:</strong> Fact-checker disagreement; citation validity rate; knowledge-base consistency checks; strict provenance requirements (every claim must map to a retrieved source). citeturn4search2turn4search8<br />
+<strong>Severity/Likelihood:</strong> Severity <strong>Medium→Critical</strong> (critical in clinical/biological decision support); likelihood <strong>Common</strong> without grounding. citeturn4search0turn5view0<br />
+<strong>Mitigations:</strong><br />
+Engineering: retrieval-augmented verification; self-verification against authoritative databases (domain tools); abstention behavior; claim-level provenance. citeturn4search12turn4search1<br />
+Process: grounded evaluation suites; domain expert review; restrict autonomous action when factual uncertainty is high. citeturn14view2turn5view0<br />
+Policy: in clinical settings, ensure outputs remain reviewable and do not bypass professional judgment; align with CDS governance expectations. citeturn5view0turn9search5  </p>
+<p><strong>Verification failure (no, incomplete, or incorrect verification)</strong> <em>(Monitoring &amp; recovery)</em><br />
+<strong>Definition:</strong> The agent fails to verify whether it achieved the goal, or performs incorrect verification (false-positive success), allowing errors to ship.<br />
+<strong>Typical triggers:</strong> Lack of validators; reliance on the same model as both actor and judge; weak tests; missing ground truth.<br />
+<strong>Examples:</strong> MAST includes “No or Incomplete Verification” and “Incorrect Verification” failure modes in its task verification category. citeturn15view0 In scientific-tool agents, ChemCrow reports that GPT-4 used as an evaluator could not reliably distinguish clearly wrong completions from correct agent outputs, illustrating verifier unreliability as a practical failure mode. citeturn3search1turn3search5<br />
+<strong>Root causes:</strong> Single-model monoculture; evaluator bias; missing end-to-end checks; metric mis-specification. citeturn15view0turn3search1<br />
+<strong>Detection signals/metrics:</strong> Disagreement among diverse verifiers; validator coverage gaps; mismatch between internal “success” and external ground truth; high false-pass rate. citeturn17view0turn15view0<br />
+<strong>Severity/Likelihood:</strong> Severity <strong>High</strong> (because it converts errors into shipped actions); likelihood <strong>Common</strong> in early-stage agent stacks.<br />
+<strong>Mitigations:</strong><br />
+Engineering: independent validators; multi-model or tool-based verification; executable checks (tests, invariants); avoid same-model judge without calibration. citeturn17view0turn3search1<br />
+Process: evaluation of monitors themselves; repeated-run reliability tests; post-deployment audits. citeturn14view3turn17view0<br />
+Policy: require verification evidence/trace retention in high-risk deployments. citeturn14view3turn5view0  </p>
+<p><strong>Memory poisoning and persistent instruction corruption</strong> <em>(Security × memory/state)</em><br />
+<strong>Definition:</strong> An adversary (or contaminated data stream) inserts malicious content into an agent’s memory/knowledge store so that future actions are manipulated when the memory is recalled.<br />
+<strong>Typical triggers:</strong> RAG-based memories that accept writes; autonomous memorization; shared memory across agents; insufficient validation of stored content. citeturn11view4turn11view6turn12view0<br />
+<strong>Examples:</strong> A detailed industry case study shows a memory-poisoning attack on an email assistant: baseline attack success <strong>4/10 (40%)</strong>, rising to <strong>&gt;80%</strong> after modifying the system prompt to encourage memory checking before responses—demonstrating how procedural changes can <em>increase</em> exploit reliability. citeturn11view4turn11view5<br />
+<strong>Root causes:</strong> Lack of semantic/contextual validation for stored memories; missing authorization checks on memory writes; treating memory as trusted. citeturn11view4turn11view5<br />
+<strong>Detection signals/metrics:</strong> Untrusted memory-write events; anomalous retrieval contents; drift in behavior correlated with recalled memory items; “memory provenance” failures. citeturn11view4turn11view5<br />
+<strong>Severity/Likelihood:</strong> Severity <strong>Critical</strong> for enterprise/clinical; likelihood <strong>Uncommon→Common</strong> depending on memory write controls. citeturn11view6turn14view3<br />
+<strong>Mitigations:</strong><br />
+Engineering: authenticated memorization; trust boundaries between memory tiers; contextual validation before memory influences actions; user-visible memory inspection and remediation. citeturn11view5turn11view4<br />
+Process: red-team memory channels; continuous monitoring of memory mutations. citeturn11view4turn14view1<br />
+Policy: treat agent memory as a security-sensitive asset (access controls, retention, incident response). citeturn6search1turn14view3  </p>
+<p><strong>Prompt injection and indirect instruction hijacking</strong> <em>(Security &amp; adversarial surface)</em><br />
+<strong>Definition:</strong> Attackers manipulate the agent via crafted instructions in user input or in retrieved/third-party content (indirect injection), causing the agent to ignore original goals and controls.<br />
+<strong>Typical triggers:</strong> Browsing/RAG; email/knowledge ingestion; insufficient separation of “data” and “instructions”; tools that fetch untrusted pages.<br />
+<strong>Examples:</strong> Indirect prompt injection research demonstrates remote exploitation where prompts are injected into data likely to be retrieved, enabling effects such as manipulating tool/API calls and data theft. citeturn0search2turn0search5 OWASP ranks prompt injection as a top risk category for LLM applications. citeturn0search3turn0search12<br />
+<strong>Root causes:</strong> Instruction/data boundary collapse; lack of content provenance; inadequate prompt/tool defenses; monitor models inheriting brittleness. citeturn0search2turn14view1<br />
+<strong>Detection signals/metrics:</strong> Known attack pattern matches; anomalous instruction shifts; sudden goal drift; monitoring-model alerts (with caution about false negatives). citeturn14view1turn0search3<br />
+<strong>Severity/Likelihood:</strong> Severity <strong>High→Critical</strong>; likelihood <strong>Common</strong> for browsing agents unless strongly sandboxed.<br />
+<strong>Mitigations:</strong><br />
+Engineering: isolate untrusted content; enforce tool-call allowlists; deterministic policy checks; robust sandbox and output sanitization. citeturn0search3turn0search2turn14view1<br />
+Process: continuous adversarial testing; threat modeling with OWASP/ATLAS categories. citeturn0search3turn6search1<br />
+Policy: security review and monitoring requirements for any agent consuming third-party content. citeturn14view3turn6search1  </p>
+<p><strong>State desynchronization and context loss</strong> <em>(Memory/state; reliability)</em><br />
+<strong>Definition:</strong> The agent’s internal state (conversation history, task state, environment state assumptions) diverges from reality, leading to incorrect actions despite locally coherent reasoning.<br />
+<strong>Typical triggers:</strong> Long sessions; tool outputs not incorporated; conversation resets; partial observability; concurrency.<br />
+<strong>Examples:</strong> MAST explicitly includes “loss of conversation history” and “conversation reset” as failure modes in MAS traces. citeturn15view0 Component-level fault analysis also finds that failures frequently propagate across state management, memory-related symptoms, and other architectural boundaries, emphasizing state-handling fragility in agent stacks. citeturn2view0<br />
+<strong>Root causes:</strong> Weak state modeling; token/context management defects; memory subsystem bugs; inconsistent serialization between steps. citeturn2view0turn15view0<br />
+<strong>Detection signals/metrics:</strong> Inconsistencies between stored state and tool observations; replay divergence; sudden “amnesia” markers; increased corrective loops. citeturn15view0turn2view0<br />
+<strong>Severity/Likelihood:</strong> Severity <strong>Medium→High</strong>; likelihood <strong>Common</strong> in long-horizon tasks. citeturn17view0turn15view0<br />
+<strong>Mitigations:</strong><br />
+Engineering: explicit state machines; environment snapshots; idempotent actions; robust context compression with invariants; state versioning. citeturn2view0turn17view0<br />
+Process: replay-based debugging; fault injection for context truncation and tool latency. citeturn2view0turn8search6<br />
+Policy: higher oversight for event-driven agents that operate continuously. citeturn12view1turn14view2  </p>
+<p><strong>Observability and provenance gaps</strong> <em>(Interpretability; monitoring)</em><br />
+<strong>Definition:</strong> The system cannot reliably explain, audit, or reproduce why an action was taken (missing logs, unclear tool provenance, opaque monitor decisions), reducing accountability and impairing safety controls.<br />
+<strong>Typical triggers:</strong> Rapidly evolving tool ecosystems; insufficient logging; multi-agent handoffs; privacy trade-offs in trace collection.<br />
+<strong>Examples:</strong> Large-scale fault analysis characterizes an “observability crisis” in autonomous/agentic systems and notes that weak error handling and limited logging can obscure faults and amplify debugging difficulty. citeturn2view0 Industry guidance recommends unique identifiers and audit trails across agent components to attribute actions. citeturn11view2turn10view3 Failure-detection work stresses that incident reporting should be grounded in detailed logs and traces of agent actions, not only final outcomes. citeturn14view3turn14view1<br />
+<strong>Root causes:</strong> Telemetry treated as optional; privacy constraints without alternative assurance; nonstandard trace formats; multi-agent attribution ambiguity. citeturn14view1turn2view0<br />
+<strong>Detection signals/metrics:</strong> “Unknown cause” incident fraction; missing tool-call arguments/outcomes; low reproducibility on replay; high MTTR for agent issues. citeturn2view0turn14view3<br />
+<strong>Severity/Likelihood:</strong> Severity <strong>High</strong> (because it disables oversight); likelihood <strong>Common</strong> for early deployments.<br />
+<strong>Mitigations:</strong><br />
+Engineering: structured logging; trace schemas; component IDs; provenance tags for retrieved content; privacy-preserving monitoring architectures when needed. citeturn14view1turn11view2turn14view3<br />
+Process: “monitor the monitors” evaluation; postmortems tied to traces; shared norms for agent system cards that include monitoring and detection evaluation. citeturn14view3turn14view1<br />
+Policy: require auditability proportional to stakes (especially clinical/critical infrastructure). citeturn14view3turn5view0  </p>
+<p><strong>Resource exhaustion and agent denial of service</strong> <em>(Reliability &amp; security)</em><br />
+<strong>Definition:</strong> The agent exhausts compute, tokens, tool quotas, or operational constraints, causing service disruption or unsafe partial execution.<br />
+<strong>Typical triggers:</strong> Loops; large tool outputs; adversarial prompts designed to maximize cost; missing rate limits.<br />
+<strong>Examples:</strong> OWASP lists “Model Denial of Service” as a key LLM application risk. citeturn0search3 Execution failures include exhausting operational constraints (e.g., inference token limits). citeturn14view0 Empirical fault work highlights “resource exhaustion beyond token counting” as a salient area requiring attention in agentic systems. citeturn2view0<br />
+<strong>Root causes:</strong> No budget management; lack of termination criteria; unbounded tool retrieval; weak caching strategies. citeturn15view0turn2view0<br />
+<strong>Detection signals/metrics:</strong> Token/time budget alerts; tool quota exhaustion; latency spikes; repeated failure-to-progress with rising cost. citeturn14view0turn0search3<br />
+<strong>Severity/Likelihood:</strong> Severity <strong>Medium→High</strong> (higher when partial actions are harmful); likelihood <strong>Common</strong> without strong budget controls.<br />
+<strong>Mitigations:</strong><br />
+Engineering: strict budgets and circuit breakers; progressive summarization; rate limits; bounded retrieval; safe abort semantics. citeturn0search3turn15view0turn14view3<br />
+Process: adversarial cost testing; staged rollouts with cost SLOs. citeturn14view3turn8search6<br />
+Policy: cost governance and abuse monitoring for publicly exposed agents. citeturn0search3turn6search1  </p>
+<p><strong>Overreliance and automation bias in human oversight</strong> <em>(Human oversight; safety/interpretability)</em><br />
+<strong>Definition:</strong> Human operators over-trust or under-trust the agent, accepting incorrect outputs or failing to intervene appropriately; agent behavior can also induce “rubber-stamping” via plausible outputs.<br />
+<strong>Typical triggers:</strong> High-but-imperfect reliability; time pressure; interruptions; opaque reasoning; missing uncertainty cues.<br />
+<strong>Examples:</strong> Classic human factors work identifies misuse/abuse of automation and the emergence of automation bias. citeturn9search4 Systematic reviews in clinical decision support contexts document automation bias and discuss its impact on vigilance and errors. citeturn9search5turn9search37 Agent governance guidance emphasizes defining human roles and responsibilities in human–AI interaction to manage these limitations. citeturn9search35<br />
+<strong>Root causes:</strong> Poorly calibrated confidence cues; lack of explanation/provenance; organizational workflow pressure; insufficient training. citeturn9search5turn14view1<br />
+<strong>Detection signals/metrics:</strong> Acceptance rate of agent suggestions; low rate of independent verification; correlation between agent confidence and human compliance; “override latency.” citeturn9search14turn9search5<br />
+<strong>Severity/Likelihood:</strong> Severity <strong>High</strong> in clinical/safety-critical decision support; likelihood <strong>Common</strong> unless actively mitigated. citeturn5view0turn9search5<br />
+<strong>Mitigations:</strong><br />
+Engineering: calibrated uncertainty, provenance, and “why this action” summaries; friction for irreversible actions; decision support that encourages verification. citeturn9search35turn14view2<br />
+Process: training and simulation; periodic audits of reliance behavior; evaluate human–agent team outcomes, not just agent outcomes. citeturn9search2turn14view3<br />
+Policy: mandate oversight and logging for high-risk systems; ensure staffing and workflow support for meaningful review. citeturn14view3turn5view0  </p>
+<h2 id="comparative-artifacts">Comparative artifacts<a class="headerlink" href="#comparative-artifacts" title="Permanent link">&para;</a></h2>
+<h3 id="comparison-table-of-failure-modes">Comparison table of failure modes<a class="headerlink" href="#comparison-table-of-failure-modes" title="Permanent link">&para;</a></h3>
+<p>The table below compares primary modes (names align with the taxonomy above). Severity is qualitative (Low / Medium / High / Critical) under typical agentic conditions; it should be recalibrated to stakes and reversibility in the target deployment. citeturn14view2turn14view3</p>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Category</th>
+<th>Typical triggers</th>
+<th>Detection signals / metrics</th>
+<th>Prioritized mitigations (engineering / process / policy)</th>
+<th>Severity</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Weak fallback (silent degradation)</td>
+<td>Monitoring &amp; recovery</td>
+<td>Partial outages; tool failures; token limits; rate limits</td>
+<td>Model/tool ID shifts; tool-call drop; quality drift vs eval; variance spike</td>
+<td>Explicit degraded-mode flags; fail-closed on high stakes / chaos tests / disclosure rules</td>
+<td>High</td>
+</tr>
+<tr>
+<td>Choice overload (premature commitment)</td>
+<td>Spec &amp; planning</td>
+<td>High branching; ambiguity; budgeted reasoning</td>
+<td>Low plan diversity; early tool lock-in; late replans</td>
+<td>Deliberative search + backtracking; reject/ask-human / ambiguity tests / approval for irreversible steps</td>
+<td>Medium–High</td>
+</tr>
+<tr>
+<td>Goal/intent mismatch</td>
+<td>Spec &amp; alignment</td>
+<td>Vague prompts; hidden preferences; shorthand</td>
+<td>Low clarification rate; user corrections; plan–intent semanticdiff</td>
+<td>Structured elicitation; confirmations / user studies / domain templates</td>
+<td>High</td>
+</tr>
+<tr>
+<td>Constraint omission / policy noncompliance</td>
+<td>Spec &amp; governance</td>
+<td>Missing executable policies; unclear permissions</td>
+<td>Authorization denials; policy flags; overbroad access</td>
+<td>Least privilege + policy engine / access reviews / audit+retention requirements</td>
+<td>Critical</td>
+</tr>
+<tr>
+<td>Insufficient planning / long-horizon brittleness</td>
+<td>Planning &amp; control</td>
+<td>Multi-step dependencies; dynamic environment</td>
+<td>High replanning; stuck rate; dependency-depth failures</td>
+<td>Structured planning + recovery loops / long-horizon benchmarks / autonomy limits</td>
+<td>High</td>
+</tr>
+<tr>
+<td>Premature termination / step repetition</td>
+<td>Planning &amp; control</td>
+<td>Weak progress metrics; bad termination</td>
+<td>Repeated action cycles; “done” w/o validator</td>
+<td>Loop detectors; validator-gated done / adversarial near-complete tests / cost governance</td>
+<td>Medium–High</td>
+</tr>
+<tr>
+<td>Reasoning–action mismatch</td>
+<td>Planning &amp; execution</td>
+<td>Tool schema mismatch; non-grounded plans</td>
+<td>Plan–tool discrepancy; trace inconsistency</td>
+<td>Typed tools; constrained decoding / seed-diff tests / audit expectations</td>
+<td>High</td>
+</tr>
+<tr>
+<td>Multi-agent coordination breakdown</td>
+<td>Coordination (MAS)</td>
+<td>Role ambiguity; no arbitration; long dialogues</td>
+<td>Contradictions; ignored input; resets; consensus failure</td>
+<td>Protocols + arbitration; shared versioned state / MAS trace eval / clarified accountability</td>
+<td>High–Critical</td>
+</tr>
+<tr>
+<td>Wrong tool selection / tool misuse</td>
+<td>Tool &amp; actuation</td>
+<td>Overlapping tools; vague tool docs</td>
+<td>Schema errors; retries; endpoint failure clustering</td>
+<td>Strict schemas; reject option; simulators / contract tests / sensitive-tool gating</td>
+<td>High</td>
+</tr>
+<tr>
+<td>Unsafe tool-output handling</td>
+<td>Tool security</td>
+<td>Output executed/rendered unsafely</td>
+<td>Injection signatures; anomalous file/network ops</td>
+<td>Output sanitization; sandbox / appsec red-team / security review gates</td>
+<td>Critical</td>
+</tr>
+<tr>
+<td>Unauthorized actuation / boundary violation</td>
+<td>Tool &amp; environment</td>
+<td>Overbroad credentials; weak auth integration</td>
+<td>Anomalous access; privilege escalation patterns</td>
+<td>Per-action auth; escrow creds / access audits / compliance logging</td>
+<td>Critical</td>
+</tr>
+<tr>
+<td>Hallucination / fabricated evidence</td>
+<td>Knowledge &amp; interpretability</td>
+<td>No grounding; biomedical nomenclature</td>
+<td>Citation validity; fact-checker disagreement</td>
+<td>RAG + provenance; abstain / domain expert review / clinical safeguards</td>
+<td>High–Critical</td>
+</tr>
+<tr>
+<td>Verification failure (no/incorrect verification)</td>
+<td>Monitoring</td>
+<td>No validators; same-model judge</td>
+<td>False-pass rate; verifier disagreement</td>
+<td>Independent validators; executable checks / monitor eval / trace retention</td>
+<td>High</td>
+</tr>
+<tr>
+<td>Memory poisoning (persistent)</td>
+<td>Security × memory</td>
+<td>Autonomous memorization; unvalidated writes</td>
+<td>Untrusted memory writes; behavior drift correlated with recall</td>
+<td>Authenticated memorization; contextual validation / red-team memory / memory governance</td>
+<td>Critical</td>
+</tr>
+<tr>
+<td>Prompt injection (indirect)</td>
+<td>Security &amp; adversarial</td>
+<td>Browsing/RAG; untrusted content</td>
+<td>Goal drift; instruction override cues</td>
+<td>Data/instruction isolation; allowlists / continuous adversarial testing / appsec requirements</td>
+<td>Critical</td>
+</tr>
+<tr>
+<td>State desynchronization / context loss</td>
+<td>Memory/state</td>
+<td>Long sessions; concurrency; resets</td>
+<td>Replay divergence; “amnesia” markers</td>
+<td>State machines; snapshots / fault injection / higher oversight for event-driven agents</td>
+<td>Medium–High</td>
+</tr>
+<tr>
+<td>Observability &amp; provenance gaps</td>
+<td>Interpretability</td>
+<td>Insufficient logging; privacy trade-offs</td>
+<td>Unknown-cause incidents; low replayability</td>
+<td>Structured traces + IDs; provenance tags / postmortems / audit requirements</td>
+<td>High</td>
+</tr>
+<tr>
+<td>Resource exhaustion / agent DoS</td>
+<td>Reliability &amp; security</td>
+<td>Loops; large tool outputs; adversarial cost prompts</td>
+<td>Token/quota exhaustion; latency spikes</td>
+<td>Circuit breakers; budgets / adversarial cost tests / abuse monitoring</td>
+<td>Medium–High</td>
+</tr>
+</tbody>
+</table>
+<h3 id="taxonomy-diagram-mermaid">Taxonomy diagram (mermaid)<a class="headerlink" href="#taxonomy-diagram-mermaid" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>flowchart TD
+  A[Agentic AI system] --&gt; B[Specification &amp; alignment]
+  A --&gt; C[Planning &amp; control]
+  A --&gt; D[Tool &amp; actuation]
+  A --&gt; E[Memory / knowledge / state]
+  A --&gt; F[Monitoring &amp; recovery]
+  A --&gt; G[Security &amp; adversarial surface]
+
+  B --&gt; B1[Goal/intent mismatch]
+  B --&gt; B2[Constraint omission &amp; policy noncompliance]
+  B --&gt; B3[Choice overload → premature commitment]
+
+  C --&gt; C1[Insufficient planning / long-horizon brittleness]
+  C --&gt; C2[Premature termination]
+  C --&gt; C3[Step repetition loops]
+  C --&gt; C4[Reasoning–action mismatch]
+  C --&gt; C5[Multi-agent coordination breakdown]
+
+  D --&gt; D1[Wrong tool selection / tool misuse]
+  D --&gt; D2[Unauthorized actuation]
+  D --&gt; D3[Unsafe tool-output handling]
+
+  E --&gt; E1[Hallucination / fabricated evidence]
+  E --&gt; E2[State desynchronization / context loss]
+  E --&gt; E3[Memory poisoning (persistent)]
+
+  F --&gt; F1[Weak fallback (silent degradation)]
+  F --&gt; F2[Verification failure]
+  F --&gt; F3[Observability &amp; provenance gaps]
+  F --&gt; F4[Resource exhaustion / agent DoS]
+
+  G --&gt; G1[Prompt injection (direct/indirect)]
+  G --&gt; G2[Agent compromise / instruction hijack]
+  G --&gt; G3[Targeted knowledge-base poisoning]
+</code></pre></div>
+<p>This hierarchy aligns with (i) agent capability decomposition and patterns used in red-team taxonomies, (ii) trace-based empirical MAS failures, and (iii) software fault propagation and observability concerns. citeturn12view0turn15view0turn2view0turn11view5</p>
+<h3 id="simple-charts-from-cited-case-data">Simple charts from cited case data<a class="headerlink" href="#simple-charts-from-cited-case-data" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>pie showData
+  title &quot;MAST categories in annotated MAS failure traces&quot;
+  &quot;System design issues&quot; : 44.2
+  &quot;Inter-agent misalignment&quot; : 32.3
+  &quot;Task verification&quot; : 23.5
+</code></pre></div>
+<p>MAST reports these category prevalences over 1,642 annotated MAS execution traces. citeturn15view0</p>
+<div class="highlight"><pre><span></span><code>xychart-beta
+  title &quot;WebArena end-to-end task success rate&quot;
+  x-axis [&quot;Best GPT-4 agent&quot;,&quot;Human&quot;]
+  y-axis &quot;Success rate (%)&quot; 0 --&gt; 100
+  bar [14.41,78.24]
+</code></pre></div>
+<p>WebArena reports 14.41% success for the best GPT-4 agent configuration vs 78.24% for humans, emphasizing missing exploration and failure recovery. citeturn17view0turn17view1</p>
+<h2 id="mitigation-priorities-across-dimensions-and-deployment-contexts">Mitigation priorities across dimensions and deployment contexts<a class="headerlink" href="#mitigation-priorities-across-dimensions-and-deployment-contexts" title="Permanent link">&para;</a></h2>
+<h3 id="cross-cutting-mitigation-principles-linked-to-the-taxonomy">Cross-cutting mitigation principles linked to the taxonomy<a class="headerlink" href="#cross-cutting-mitigation-principles-linked-to-the-taxonomy" title="Permanent link">&para;</a></h3>
+<p><strong>Scale controls to autonomy, reversibility, and stakes.</strong> Failure detection and oversight should be stronger when actions are higher-stakes and less reversible, and when agents have greater autonomy. citeturn14view2turn14view3turn12view0 This principle directly targets high-severity modes such as unauthorized actuation, prompt/memory injection, and verification failure.</p>
+<p><strong>Treat tools and memory as first-class security boundaries.</strong> Agentic systems blur “natural language” and “programming.” Indirect prompt injection shows retrieved content can become “arbitrary code” in effect if boundaries are weak. citeturn0search2turn0search5 Memory poisoning case evidence highlights that memory autonomy and lack of semantic/context integrity checks are key exploit enablers. citeturn11view4turn11view5 Engineering controls must therefore include typed tool interfaces, strict policy enforcement, and authenticated/validated memory writes. citeturn11view5turn7search11turn14view3</p>
+<p><strong>Design verification as an independent layer, not an afterthought.</strong> Empirical traces show verification failure is common; scientific-agent work shows even strong LLMs can be weak evaluators of their own outputs. citeturn15view0turn3search1 For high-risk domains, reliance on “LLM-as-judge” without calibration should be considered a risk factor itself.</p>
+<p><strong>Make agents observable enough for accountability.</strong> Multiple sources emphasize that logs/traces of actions (not only outcomes) are required for incident response, auditing, and learning from failures. citeturn14view3turn11view2turn2view0 This is especially important because agent failures frequently cross architectural boundaries (e.g., token/state management defects surfacing as auth failures). citeturn2view0</p>
+<p><strong>Actively mitigate overreliance in human oversight.</strong> Human-in-the-loop is not automatically safe: automation bias is well-documented, including in clinical decision support. citeturn9search5turn9search37 Oversight designs should therefore include calibrated trust cues, explicit uncertainty, and workflow support to prevent “rubber-stamping.” citeturn9search35turn14view1</p>
+<h3 id="deployment-context-considerations">Deployment context considerations<a class="headerlink" href="#deployment-context-considerations" title="Permanent link">&para;</a></h3>
+<p><strong>Research automation (scientific agents, lab environments).</strong><br />
+LLM agents have been demonstrated to plan and execute complex scientific workflows using tools (documentation search, code execution, and laboratory automation). citeturn3search0turn3search12 In these settings, the highest-risk failure modes tend to be: constraint omission (safety protocols), verification failures (false success), and unauthorized actuation (physical side effects). citeturn14view0turn14view2 Practical mitigations include strong physical interlocks and human approvals for hazardous steps, plus independent validation of experimental plans and results (not just LLM self-checking). citeturn14view2turn3search0</p>
+<p><strong>Bioinformatics workflows (genomics, gene-set analysis, CRISPR design).</strong><br />
+Recent work describes LLM-based agents that integrate external biological databases/tools to reduce hallucination and improve reliability in bioinformatics workflows. citeturn4search12turn4search29turn4search1 At the same time, empirical benchmarking shows that hallucination/error rates in gene nomenclature tasks can be extremely high without strong grounding. citeturn4search0 In this domain, prioritize mitigations for: (a) hallucination/fabricated evidence and citation validity; (b) provenance logging; (c) tool-use correctness (API schema adherence); and (d) privacy/security for biomedical data access. citeturn4search2turn2view0turn14view0</p>
+<p><strong>Clinical decision support and healthcare operations.</strong><br />
+Healthcare settings amplify the severity of hallucination, automation bias, and silent degradation due to patient harm risk and accountability requirements. citeturn9search5turn4search6turn5view0 The FDA’s CDS guidance clarifies how different CDS functions may fall inside or outside device oversight, which is relevant to how agentic systems should be governed when they provide clinical recommendations. citeturn5view0 In practice, this argues for conservative autonomy ceilings (especially for irreversible actions), strong audit trails, explicit uncertainty/provenance, and human review designed to counterautomation bias. citeturn14view2turn9search37turn14view3</p>
+<p><strong>Industrial and enterprise automation (ops, cybersecurity, workflow agents).</strong><br />
+Industry taxonomies emphasize safety and security failure modes in agentic systems, including novel modes such as agent compromise and exploit chains through memory and multi-agent flows. citeturn11view5turn11view6 A practical enterprise posture should map controls to established threat modeling resources (e.g., ATLAS) and application security guidance (OWASP Top 10 for LLM apps). citeturn6search1turn0search3 The top priorities become: least privilege and per-action authorization; secure toolchains; robust monitoring for goal drift and injection; and incident readiness grounded in action traces. citeturn14view1turn14view3turn11view2</p>
+<h3 id="research-and-standards-gaps-highlighted-by-the-review">Research and standards gaps highlighted by the review<a class="headerlink" href="#research-and-standards-gaps-highlighted-by-the-review" title="Permanent link">&para;</a></h3>
+<p>1) <strong>Standardized evaluation of failure detection (and of monitors).</strong> The failure-detection report argues that without standardized evaluations, we cannot know whether real-time detection works as intended, and calls for richer evaluation science for agents. citeturn14view3turn14view0<br />
+2) <strong>Robustness under realistic noise and environment change.</strong> Benchmarking work emphasizes that agent performance in realistic environments remains far below humans and is limited by exploration and recovery. citeturn17view0turn8search6<br />
+3) <strong>Security-hardening patterns for memory and multi-agent architectures.</strong> Case studies show memory defenses and procedural changes can have non-obvious effects (sometimes increasing attack success). citeturn11view4turn11view5<br />
+4) <strong>Socio-technical integration of human oversight.</strong> Governance guidance stresses defining human roles/responsibilities, but human factors evidence shows misuse and automation bias are persistent—implying oversight must be engineered as a system property, not a checkbox. citeturn9search35turn9search5turn9search4</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["content.action.edit", "navigation.sections", "navigation.expand", "navigation.indexes", "navigation.top", "content.code.copy"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+    
+  </body>
+</html>
