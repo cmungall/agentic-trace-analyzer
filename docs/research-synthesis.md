@@ -1,5 +1,11 @@
 # Taxonomies of Failure Modes for Agentic AI Systems
 
+> Note:
+> This appendix predates the current schema alignment work. The operational
+> LinkML taxonomy used by this repo now aligns its top-level dimensions to
+> Shah et al. (2026), while this appendix remains as the broader narrative
+> synthesis that informed earlier versions.
+
 ## Executive summary
 
 Agentic AI refers to AI systems that do more than produce outputs: they *pursue goals* by iterating through observation, planning, and action in an environment (digital or physical), often with tools, memory, and sometimes multiple cooperating agents. citeturn20view0turn12view0 In practice, modern “agentic” systems frequently combine an LLM-based reasoning core with tool invocation and long-horizon control loops, which introduces failure patterns that differ from standalone LLM chat or conventional deterministic software. citeturn2view0

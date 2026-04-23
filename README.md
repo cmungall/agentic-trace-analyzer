@@ -12,14 +12,22 @@ Classify and analyze agentic AI session traces using ontology-backed failure mod
 
 ## Failure Mode Ontology
 
-Based on the taxonomy from deep research on agentic AI failure modes. Six top-level categories:
+The LinkML taxonomy is now aligned to Shah et al. (2026), *Characterizing Faults
+in Agentic AI: A Taxonomy of Types, Symptoms, and Root Causes* (`10.48550/arXiv.2603.06847`).
+The paper is stored locally at
+`docs/papers/2603.06847-shah-et-al-characterizing-faults-in-agentic-ai.pdf`.
 
-- **Specification & Alignment** — goal/intent mismatch, constraint omission, choice overload
-- **Planning & Control** — insufficient planning, premature termination, step repetition, reasoning-action mismatch, multi-agent coordination breakdown
-- **Tool & Actuation** — wrong tool selection, unauthorized actuation, unsafe output handling
-- **Memory/Knowledge/State** — hallucination, state desynchronization, memory poisoning
-- **Monitoring & Recovery** — weak fallback, verification failure, observability gaps, resource exhaustion
-- **Security & Adversarial** — prompt injection, instruction hijack, knowledge-base poisoning
+Five top-level dimensions follow the paper's architectural framing:
+
+- **Agent Cognition & Orchestration** — goal/intent mismatch, choice overload, planning/control failures
+- **Tooling, Integration & Actuation** — wrong tool selection, tool misuse, unsafe or unauthorized actions
+- **Perception, Context & Memory** — hallucination, state desynchronization, prompt injection, memory poisoning
+- **Runtime & Environment Grounding** — resource exhaustion and environment-coupled execution failures
+- **System Reliability & Observability** — weak fallback, verification failure, and provenance gaps
+
+Security and adversarial modes are still first-class in the ontology, but they are
+modeled as cross-cutting trace extensions instead of a separate sixth top-level
+bucket.
 
 The ontology is modeled in LinkML (naturally) and serialized as OWL for reasoning.
 

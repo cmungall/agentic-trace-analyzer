@@ -34,7 +34,7 @@ def on_pre_build(*, config: Any) -> None:
     _write_if_changed(REFERENCE_DIR / "enums.md", _render_enums_page(schema))
     _write_if_changed(
         REFERENCE_DIR / "failure-modes.md",
-        _render_failure_modes_page(ontology),
+        _render_failure_modes_page(schema, ontology),
     )
 
 
@@ -55,6 +55,22 @@ def _render_reference_index(schema: dict[str, Any], ontology: dict[str, Any]) ->
     enums = schema.get("enums", {})
     categories = ontology.get("categories", [])
     failure_modes = ontology.get("failure_modes", [])
+    schema_annotations = _normalize_annotations(schema.get("annotations", {}))
+    reference_lines = [
+        f"- Primary reference: {schema_annotations['primary_reference']}"
+        for key in ["primary_reference"]
+        if key in schema_annotations
+    ]
+    if "primary_reference_url" in schema_annotations:
+        reference_lines.append(
+            f"- Primary source URL: <{schema_annotations['primary_reference_url']}>"
+        )
+    if "primary_reference_doi" in schema_annotations:
+        reference_lines.append(f"- DOI: `{schema_annotations['primary_reference_doi']}`")
+    if "alignment_note" in schema_annotations:
+        reference_lines.append(f"- Alignment: {schema_annotations['alignment_note']}")
+    for note in schema_annotations.get("local_extension_note", []):
+        reference_lines.append(f"- Local extension note: {note}")
     return "\n".join(
         [
             "# LinkML Reference",
@@ -65,6 +81,10 @@ def _render_reference_index(schema: dict[str, Any], ontology: dict[str, Any]) ->
             "## Source File",
             "",
             f"- Schema: `{SCHEMA_PATH.relative_to(ROOT)}`",
+            "",
+            "## Taxonomy Alignment",
+            "",
+            *reference_lines,
             "",
             "## Schema Stats",
             "",
@@ -92,7 +112,7 @@ def _render_reference_index(schema: dict[str, Any], ontology: dict[str, Any]) ->
             "",
             "    ---",
             "",
-            "    Shared schema enums such as `SeverityLevel`.",
+            "    Shared schema enums including `SeverityLevel` and the Shah et al. reference vocabularies.",
             "",
             "    [Open enums](enums.md)",
             "",
@@ -150,6 +170,7 @@ def _render_classes_page(schema: dict[str, Any]) -> str:
                 "",
             ]
         )
+        parts.extend(_render_mapping_section(class_def))
         attributes = class_def.get("attributes", {})
         if attributes:
             parts.extend(
@@ -190,6 +211,21 @@ def _render_classes_page(schema: dict[str, Any]) -> str:
                     annotations,
                     "related_failure_modes",
                     wrap_code=True,
+                )
+            )
+            parts.extend(
+                _render_metadata_table(
+                    "Additional Metadata",
+                    _extra_annotations(
+                        annotations,
+                        excluded={
+                            "severity_range",
+                            "typical_triggers",
+                            "detection_signals",
+                            "mitigations",
+                            "related_failure_modes",
+                        },
+                    ),
                 )
             )
     return "\n".join(parts) + "\n"
@@ -247,21 +283,33 @@ def _render_enums_page(schema: dict[str, Any]) -> str:
                 "",
                 enum_def.get("description", "No description."),
                 "",
-                "| Permissible value | Display text | Meaning |",
-                "| --- | --- | --- |",
+            ]
+        )
+        parts.extend(
+            _render_metadata_table(
+                "Metadata",
+                _normalize_annotations(enum_def.get("annotations", {})),
+            )
+        )
+        parts.extend(
+            [
+                "| Permissible value | Display text | Description | Metadata |",
+                "| --- | --- | --- | --- |",
             ]
         )
         for value_name, value_def in enum_def.get("permissible_values", {}).items():
             parts.append(
                 "| "
                 f"`{value_name}` | {value_def.get('text', '')} | "
-                f"{_escape_cell(value_def.get('description', ''))} |"
+                f"{_escape_cell(value_def.get('description', ''))} | "
+                f"{_format_metadata_value(_normalize_annotations(value_def.get('annotations', {})))} |"
             )
         parts.append("")
     return "\n".join(parts) + "\n"
 
 
-def _render_failure_modes_page(ontology: dict[str, Any]) -> str:
+def _render_failure_modes_page(schema: dict[str, Any], ontology: dict[str, Any]) -> str:
+    classes = schema.get("classes", {})
     category_names = {
         category["id"]: category["name"] for category in ontology.get("categories", [])
     }
@@ -288,7 +336,9 @@ def _render_failure_modes_page(ontology: dict[str, Any]) -> str:
             ]
         )
         for mode in grouped.get(category_id, []):
+            class_def = classes.get(mode["id"], {})
             severity = mode.get("severity_range", {})
+            mapping_text = _format_mapping_cell(class_def)
             parts.extend(
                 [
                     f"### `{mode['id']}`",
@@ -303,8 +353,25 @@ def _render_failure_modes_page(ontology: dict[str, Any]) -> str:
                     "| Severity range | "
                     f"`{severity.get('minimum', '?')}` -> "
                     f"`{severity.get('maximum', '?')}` |",
-                    "",
                 ]
+            )
+            if mapping_text:
+                parts.append(f"| Mappings | {mapping_text} |")
+            parts.append("")
+            parts.extend(
+                _render_metadata_table(
+                    "Alignment Metadata",
+                    _extra_annotations(
+                        class_def.get("annotations", {}),
+                        excluded={
+                            "severity_range",
+                            "typical_triggers",
+                            "detection_signals",
+                            "mitigations",
+                            "related_failure_modes",
+                        },
+                    ),
+                )
             )
             parts.extend(_render_list_section("Typical triggers", mode.get("typical_triggers", [])))
             parts.extend(
@@ -369,6 +436,75 @@ def _annotation_value(annotation: Any) -> Any:
     if isinstance(annotation, dict) and "value" in annotation:
         return annotation["value"]
     return annotation
+
+
+def _normalize_annotations(annotations: dict[str, Any]) -> dict[str, Any]:
+    return {key: _annotation_value(value) for key, value in annotations.items()}
+
+
+def _extra_annotations(
+    annotations: dict[str, Any],
+    *,
+    excluded: set[str],
+) -> dict[str, Any]:
+    normalized = _normalize_annotations(annotations)
+    return {key: value for key, value in normalized.items() if key not in excluded}
+
+
+def _render_mapping_section(definition: dict[str, Any]) -> list[str]:
+    mapping_text = _format_mapping_cell(definition)
+    if not mapping_text:
+        return []
+    return [
+        "### Mappings",
+        "",
+        f"- {mapping_text}",
+        "",
+    ]
+
+
+def _format_mapping_cell(definition: dict[str, Any]) -> str:
+    labels = {
+        "exact_mappings": "Exact",
+        "close_mappings": "Close",
+        "broad_mappings": "Broad",
+        "narrow_mappings": "Narrow",
+        "related_mappings": "Related",
+    }
+    rendered: list[str] = []
+    for key, label in labels.items():
+        values = definition.get(key, [])
+        if values:
+            rendered.append(f"{label}: " + ", ".join(f"`{value}`" for value in values))
+    return "<br>".join(rendered)
+
+
+def _render_metadata_table(title: str, metadata: dict[str, Any]) -> list[str]:
+    if not metadata:
+        return []
+    lines = [
+        f"### {title}",
+        "",
+        "| Key | Value |",
+        "| --- | --- |",
+    ]
+    for key, value in metadata.items():
+        lines.append(f"| `{key}` | {_format_metadata_value(value)} |")
+    lines.append("")
+    return lines
+
+
+def _format_metadata_value(value: Any) -> str:
+    if isinstance(value, dict):
+        return "<br>".join(
+            f"`{key}`: {_format_metadata_value(inner_value)}"
+            for key, inner_value in value.items()
+        )
+    if isinstance(value, list):
+        return "<br>".join(str(item) for item in value)
+    if value is None:
+        return ""
+    return _escape_cell(str(value))
 
 
 def _bool_label(value: Any) -> str:

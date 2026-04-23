@@ -4,12 +4,26 @@ This taxonomy is the operational core of the project: it defines the failure
 mode categories and concrete failure modes that the analyzer can map real
 traces onto.
 
+## Primary Reference
+
+The current taxonomy is aligned to:
+
+- Shah et al. (2026), *Characterizing Faults in Agentic AI: A Taxonomy of Types, Symptoms, and Root Causes*
+- arXiv: <https://arxiv.org/abs/2603.06847>
+- DOI: `10.48550/arXiv.2603.06847`
+- Local copy: [2603.06847 PDF](papers/2603.06847-shah-et-al-characterizing-faults-in-agentic-ai.pdf)
+
+This repo aligns its top-level dimensions to that paper's five architectural
+fault dimensions, while keeping concrete leaf modes tuned for
+trace-observable runtime failures.
+
 !!! info "Source of truth"
 
     The taxonomy is modeled directly in the LinkML class hierarchy:
 
-    - abstract classes are top-level categories
-    - concrete descendant classes are failure modes
+    - abstract classes are top-level paper-aligned dimensions
+    - concrete descendant classes are trace failure modes
+    - schema, class, enum, and permissible-value metadata carry source and alignment notes
     - class metadata carries severity, triggers, signals, mitigations, and relations
 
     The source of truth is:
@@ -22,22 +36,27 @@ traces onto.
 
 | Category | Focus |
 | --- | --- |
-| Specification & Alignment | Misread goals, missing constraints, early commitment under ambiguity |
-| Planning & Control | Multi-step execution, termination, repetition, and coordination failures |
-| Tool & Actuation | Wrong tool use, unsafe tool execution, and boundary violations |
-| Memory / Knowledge / State | Hallucination, context drift, and memory corruption |
-| Monitoring & Recovery | Verification gaps, silent degradation, and resource issues |
-| Security & Adversarial | Prompt injection, compromise, and poisoned external knowledge |
+| Agent Cognition & Orchestration | Goal formation, planning, control flow, delegation, repetition, and termination failures |
+| Tooling, Integration & Actuation | Tool misuse, unsafe actuation, permissions, and deterministic system-boundary failures |
+| Perception, Context & Memory | Hallucination, state drift, context loss, prompt injection, and memory corruption |
+| Runtime & Environment Grounding | Dependency, platform, quota, and resource-limit failures visible in traces |
+| System Reliability & Observability | Verification gaps, silent degradation, fallback behaviour, and poor diagnosability |
+
+Security and adversarial failures are still represented in the ontology, but
+they are now modeled as cross-cutting trace extensions on relevant classes
+instead of a sixth top-level bucket.
 
 ## How The Taxonomy Is Structured
 
 The LinkML schema now defines:
 
 - an abstract root class for the taxonomy
-- six abstract category classes
-- one concrete class per failure mode
+- five abstract paper-aligned dimension classes
+- one concrete class per trace failure mode
 - leaf-class attributes where failure-mode-specific fields make sense
-- a `SeverityLevel` enum used inside class metadata
+- reference enums for `Shah2026FaultDimension`, `Shah2026SymptomClass`, and `Shah2026RootCauseCategory`
+- a local `SeverityLevel` enum for project-specific operational severity
+- schema/class/enum/PV annotations that preserve source and alignment metadata
 
 This means the taxonomy is no longer split across a generic schema plus a
 separate instance file. The hierarchy itself is the model.
@@ -58,7 +77,8 @@ separate instance file. The hierarchy itself is the model.
 
     ---
 
-    Browse the LinkML enums, including `SeverityLevel`.
+    Browse the LinkML enums, including the Shah et al. (2026) reference vocabularies
+    and the repo's local `SeverityLevel`.
 
     [Open enum reference](reference/enums.md)
 
@@ -90,4 +110,5 @@ It is a typed model that drives:
 - ontology-backed classifier output
 - stable failure mode identifiers
 - machine-readable enums and ranges
+- paper/source provenance carried in schema metadata
 - generated reference docs that stay aligned with the YAML sources

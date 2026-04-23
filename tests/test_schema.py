@@ -6,13 +6,15 @@ from agentic_trace_analyzer.schema import SCHEMA_PATH
 def test_schema_declares_root_tree_and_required_enum() -> None:
     schema_text = SCHEMA_PATH.read_text(encoding="utf-8")
     assert "SeverityLevel" in schema_text
+    assert "Shah2026FaultDimension" in schema_text
+    assert "10.48550/arXiv.2603.06847" in schema_text
     assert "failure_mode:" in schema_text
     assert "tree_root: true" in schema_text
 
 
 def test_ontology_is_derived_from_class_tree() -> None:
     ontology = load_ontology()
-    assert len(ontology["categories"]) == 6
+    assert len(ontology["categories"]) == 5
 
     modes = {entry["id"]: entry for entry in ontology["failure_modes"]}
     weak_fallback = modes["weak_fallback_silent_degradation"]
@@ -31,8 +33,8 @@ def test_ontology_is_derived_from_class_tree() -> None:
     assert "step_repetition_loop" in {
         subtype
         for category in ontology["categories"]
-        if category["id"] == "planning_control"
+        if category["id"] == "agent_cognition_orchestration"
         for subtype in category["subtypes"]
     }
     assert "degraded_mode" in weak_fallback["attributes"]
-    assert modes["tool_misuse"]["category"] == "tool_actuation"
+    assert modes["tool_misuse"]["category"] == "tooling_integration_actuation"

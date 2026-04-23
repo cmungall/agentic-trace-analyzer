@@ -2,6 +2,10 @@
 
 Ontology-backed analysis and classification for agentic AI session traces.
 
+The taxonomy is now aligned to Shah et al. (2026), *Characterizing Faults in
+Agentic AI: A Taxonomy of Types, Symptoms, and Root Causes*, with a local copy
+available at [2603.06847 PDF](papers/2603.06847-shah-et-al-characterizing-faults-in-agentic-ai.pdf).
+
 ## Purpose
 
 This repo does two related things:
@@ -11,7 +15,8 @@ This repo does two related things:
 
 The taxonomy is modeled directly as a LinkML class tree, so the docs can expose
 the actual schema hierarchy, enums, and leaf-class fields instead of just prose
-about them.
+about them. The top-level dimensions follow the paper's five architectural
+fault dimensions; the leaf modes remain trace-focused adaptations.
 
 ## Documentation Map
 

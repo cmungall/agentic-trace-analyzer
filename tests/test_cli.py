@@ -17,6 +17,7 @@ def test_schema_command_dumps_linkml_schema() -> None:
     assert "Agentic Trace Failure Mode Ontology" in result.output
     assert "failure_mode" in result.output
     assert "SeverityLevel" in result.output
+    assert "Shah2026FaultDimension" in result.output
 
 
 def test_analyze_command_reports_findings() -> None:
