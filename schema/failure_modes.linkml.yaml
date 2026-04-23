@@ -1,0 +1,1396 @@
+id: https://w3id.org/agentic-trace-analyzer/failure-modes
+name: agentic_trace_failure_modes
+title: Agentic Trace Failure Mode Ontology
+description: >-
+  LinkML schema for ontology-backed classification of agentic AI trace failures,
+  modeled directly as a strict class taxonomy and aligned at the top level to
+  Shah et al. (2026), "Characterizing Faults in Agentic AI: A Taxonomy of
+  Types, Symptoms, and Root Causes."
+license: https://opensource.org/license/mit
+version: 0.3.0
+
+annotations:
+  primary_reference:
+    tag: primary_reference
+    value: >-
+      Shah, M. B., Morovati, M. M., Rahman, M. M., and Khomh, F. (2026).
+      Characterizing Faults in Agentic AI: A Taxonomy of Types, Symptoms, and
+      Root Causes.
+  primary_reference_url:
+    tag: primary_reference_url
+    value: https://arxiv.org/abs/2603.06847
+  primary_reference_doi:
+    tag: primary_reference_doi
+    value: 10.48550/arXiv.2603.06847
+  alignment_note:
+    tag: alignment_note
+    value: >-
+      The five top-level abstract classes align to the architectural fault
+      dimensions reported by Shah et al. (2026). Concrete leaf failure modes
+      remain trace-observable adaptations for runtime session analysis.
+  local_extension_note:
+    tag: local_extension_note
+    value:
+      - "Security and adversarial failures are retained as cross-cutting trace extensions rather than a separate top-level dimension."
+      - "Severity ranges are project-specific operational metadata rather than paper-derived labels."
+
+prefixes:
+  linkml: https://w3id.org/linkml/
+  ata: https://w3id.org/agentic-trace-analyzer/
+  schema: http://schema.org/
+  doi: https://doi.org/
+  shah2026: https://doi.org/10.48550/arXiv.2603.06847#
+
+default_prefix: ata
+default_range: string
+
+imports:
+  - linkml:types
+
+classes:
+  FailureMode:
+    abstract: true
+    tree_root: true
+    title: Failure Mode
+    description: >-
+      Root of the strict tree taxonomy for agentic AI trace failures. Direct
+      abstract children align to the five architectural fault dimensions in
+      Shah et al. (2026).
+
+  AgentCognitionOrchestration:
+    is_a: FailureMode
+    abstract: true
+    title: "Agent Cognition & Orchestration"
+    description: >-
+      Trace-observable failures in intent formation, planning, control flow,
+      delegation, and termination. This aligns to Dimension I in Shah et al.
+      (2026).
+    exact_mappings:
+      - shah2026:agent_cognition_orchestration
+    annotations:
+      source_reference:
+        tag: source_reference
+        value: "Shah et al. (2026), Figure 2 / Section 3.1.1, Dimension I"
+      alignment_status:
+        tag: alignment_status
+        value: paper_dimension
+
+  ToolingIntegrationActuation:
+    is_a: FailureMode
+    abstract: true
+    title: "Tooling, Integration & Actuation"
+    description: >-
+      Failures at the boundary between agent reasoning and deterministic tools,
+      APIs, permissions, and external systems. This aligns to Dimension II in
+      Shah et al. (2026).
+    exact_mappings:
+      - shah2026:tooling_integration_actuation
+    annotations:
+      source_reference:
+        tag: source_reference
+        value: "Shah et al. (2026), Figure 2 / Section 3.1.1, Dimension II"
+      alignment_status:
+        tag: alignment_status
+        value: paper_dimension
+
+  PerceptionContextMemory:
+    is_a: FailureMode
+    abstract: true
+    title: "Perception, Context & Memory"
+    description: >-
+      Failures rooted in input interpretation, factual grounding, state
+      tracking, and persistent memory. This aligns to Dimension III in Shah et
+      al. (2026).
+    exact_mappings:
+      - shah2026:perception_context_memory
+    annotations:
+      source_reference:
+        tag: source_reference
+        value: "Shah et al. (2026), Figure 2 / Section 3.1.1, Dimension III"
+      alignment_status:
+        tag: alignment_status
+        value: paper_dimension
+
+  RuntimeEnvironmentGrounding:
+    is_a: FailureMode
+    abstract: true
+    title: "Runtime & Environment Grounding"
+    description: >-
+      Failures rooted in runtime dependencies, platform assumptions, resource
+      limits, and execution-environment coupling. This aligns to Dimension IV
+      in Shah et al. (2026).
+    exact_mappings:
+      - shah2026:runtime_environment_grounding
+    annotations:
+      source_reference:
+        tag: source_reference
+        value: "Shah et al. (2026), Figure 2 / Section 3.1.1, Dimension IV"
+      alignment_status:
+        tag: alignment_status
+        value: paper_dimension
+
+  SystemReliabilityObservability:
+    is_a: FailureMode
+    abstract: true
+    title: "System Reliability & Observability"
+    description: >-
+      Failures where verification, fallback behavior, error handling, or
+      observability do not surface or contain runtime problems. This aligns to
+      Dimension V in Shah et al. (2026).
+    exact_mappings:
+      - shah2026:system_reliability_observability
+    annotations:
+      source_reference:
+        tag: source_reference
+        value: "Shah et al. (2026), Figure 2 / Section 3.1.1, Dimension V"
+      alignment_status:
+        tag: alignment_status
+        value: paper_dimension
+
+  WeakFallbackSilentDegradation:
+    is_a: SystemReliabilityObservability
+    title: "Weak Fallback (Silent Degradation)"
+    description: >-
+      The agent silently enters a degraded operating mode such as a fallback
+      model, reduced toolset, cached retrieval path, or heuristic shortcut
+      without surfacing that downgrade to the operator.
+    annotations:
+      severity_range:
+        tag: severity_range
+        value:
+          minimum: medium
+          maximum: critical
+      typical_triggers:
+        tag: typical_triggers
+        value:
+          - "Tool or API failures"
+          - "Rate limits or partial outages"
+          - "Token or compute constraints"
+          - "Missing permissions on the preferred path"
+          - "Uninstrumented graceful-degradation logic"
+      detection_signals:
+        tag: detection_signals
+        value:
+          - "Sudden changes in model identifiers across adjacent events"
+          - "Tool-call volume or success rate drops"
+          - "Spikes in best-effort or fallback phrasing"
+          - "Divergence between offline evaluation quality and online trace behavior"
+          - "Increased run-to-run variance after a failure"
+      mitigations:
+        tag: mitigations
+        value:
+          - "Emit explicit degraded-mode flags in telemetry and user-visible output"
+          - "Fail closed for high-stakes operations rather than silently degrading"
+          - "Evaluate fallback paths independently from primary paths"
+          - "Maintain incident playbooks for partial outages and fallback activation"
+      related_failure_modes:
+        tag: related_failure_modes
+        value:
+          - "verification_failure"
+          - "observability_provenance_gaps"
+          - "resource_exhaustion_agent_denial_of_service"
+    attributes:
+      degraded_mode:
+        range: string
+        description: >-
+          Fallback model, tool path, or degraded operating mode observed in the
+          trace.
+      fallback_trigger:
+        range: string
+        description: >-
+          Immediate trigger associated with the fallback activation.
+
+  ChoiceOverloadPrematureCommitment:
+    is_a: AgentCognitionOrchestration
+    title: "Choice Overload (Premature Commitment)"
+    description: >-
+      Under a large branching factor, the agent commits too early to one plan,
+      interpretation, or tool without sufficient exploration or backtracking.
+    annotations:
+      severity_range:
+        tag: severity_range
+        value:
+          minimum: medium
+          maximum: high
+      typical_triggers:
+        tag: typical_triggers
+        value:
+          - "Ambiguous goals"
+          - "High-dimensional action spaces"
+          - "Long-horizon tool-rich tasks"
+          - "Budgeted reasoning that forces early stopping"
+          - "Missing explore-versus-exploit logic"
+      detection_signals:
+        tag: detection_signals
+        value:
+          - "Low plan diversity in reasoning traces"
+          - "Early tool lock-in despite ambiguous inputs"
+          - "Frequent late replans after initial commitment"
+          - "Repeated failure on tasks with large branching factors"
+          - "Low sensitivity to new evidence after an initial choice"
+      mitigations:
+        tag: mitigations
+        value:
+          - "Use deliberative search with checkpoints and backtracking"
+          - "Add reject or ask-human branches for uncertain tool selection"
+          - "Allocate an explicit exploration budget before irreversible steps"
+          - "Stress test tasks with multiple plausible solution paths"
+      related_failure_modes:
+        tag: related_failure_modes
+        value:
+          - "goal_intent_mismatch"
+          - "insufficient_planning_long_horizon_brittleness"
+          - "premature_termination"
+
+  GoalIntentMismatch:
+    is_a: AgentCognitionOrchestration
+    title: "Goal / Intent Mismatch"
+    description: >-
+      The agent forms an internal objective that differs from the user's real
+      intent, producing locally coherent actions that are globally wrong.
+    annotations:
+      severity_range:
+        tag: severity_range
+        value:
+          minimum: medium
+          maximum: critical
+      typical_triggers:
+        tag: typical_triggers
+        value:
+          - "Vague or shorthand prompts"
+          - "Hidden preferences or stakeholder conflicts"
+          - "Missing domain constraints"
+          - "Context omissions during long sessions"
+          - "Weak clarification-seeking behavior"
+      detection_signals:
+        tag: detection_signals
+        value:
+          - "Low clarification rate before execution"
+          - "High rate of user corrections or undo requests"
+          - "Semantic mismatch between extracted requirements and later actions"
+          - "Plans that optimize a proxy objective instead of the stated goal"
+          - "Repeated comments that the agent is solving the wrong problem"
+      mitigations:
+        tag: mitigations
+        value:
+          - "Use structured intent elicitation before execution"
+          - "Fail closed when intent remains underspecified"
+          - "Capture explicit preference and constraint schemas"
+          - "Require confirmation before irreversible steps"
+      related_failure_modes:
+        tag: related_failure_modes
+        value:
+          - "choice_overload_premature_commitment"
+          - "constraint_omission_policy_noncompliance"
+          - "reasoning_action_mismatch"
+
+  ConstraintOmissionPolicyNoncompliance:
+    is_a: ToolingIntegrationActuation
+    title: "Constraint Omission / Policy Noncompliance"
+    description: >-
+      The agent fails to model or enforce explicit constraints such as tool
+      permissions, safety policies, or regulatory requirements.
+    annotations:
+      alignment_status:
+        tag: alignment_status
+        value: trace_adaptation
+      cross_cutting_concerns:
+        tag: cross_cutting_concerns
+        value:
+          - "policy_compliance"
+          - "security"
+      severity_range:
+        tag: severity_range
+        value:
+          minimum: high
+          maximum: critical
+      typical_triggers:
+        tag: typical_triggers
+        value:
+          - "Vaguely specified tools"
+          - "Overlapping tool capabilities"
+          - "Missing approval or permission checks"
+          - "Policy encoded only as prompt text"
+          - "Weak separation between instructions and untrusted content"
+      detection_signals:
+        tag: detection_signals
+        value:
+          - "Authorization denials in tool results"
+          - "Policy-violation markers"
+          - "Capability overreach relative to the stated task"
+          - "Anomalous resource access patterns"
+          - "Approval-required actions attempted without confirmation"
+      mitigations:
+        tag: mitigations
+        value:
+          - "Use least-privilege tool scopes and capability-based APIs"
+          - "Enforce executable policy checks before action"
+          - "Add sandboxing around file and network mutation"
+          - "Require auditable chains of events for high-risk domains"
+      related_failure_modes:
+        tag: related_failure_modes
+        value:
+          - "unauthorized_actuation_permission_boundary_violation"
+          - "prompt_injection_indirect_instruction_hijacking"
+          - "tool_misuse"
+
+  InsufficientPlanningLongHorizonBrittleness:
+    is_a: AgentCognitionOrchestration
+    title: "Insufficient Planning / Long-Horizon Brittleness"
+    description: >-
+      The agent produces incomplete or fragile plans that fail under multi-step
+      dependencies, dynamic environments, or long context histories.
+    annotations:
+      severity_range:
+        tag: severity_range
+        value:
+          minimum: medium
+          maximum: high
+      typical_triggers:
+        tag: typical_triggers
+        value:
+          - "Long-horizon tasks"
+          - "Dynamic or partially observed environments"
+          - "Multi-tool workflows"
+          - "Long context histories"
+          - "Weak world models or state tracking"
+      detection_signals:
+        tag: detection_signals
+        value:
+          - "High replanning frequency"
+          - "Increasing plan-versus-execution divergence over time"
+          - "Rising stuck rates on deeper dependency chains"
+          - "Missing recovery after failed steps"
+          - "Repeated inability to represent preconditions or effects"
+      mitigations:
+        tag: mitigations
+        value:
+          - "Use structured planning representations and checkpoints"
+          - "Integrate failure recovery into the control loop"
+          - "Benchmark on long-horizon tasks rather than only short tasks"
+          - "Restrict autonomy on irreversible long-horizon operations"
+      related_failure_modes:
+        tag: related_failure_modes
+        value:
+          - "choice_overload_premature_commitment"
+          - "premature_termination"
+          - "reasoning_action_mismatch"
+
+  PrematureTermination:
+    is_a: AgentCognitionOrchestration
+    title: "Premature Termination"
+    description: >-
+      The agent declares success or stops executing before the objective has
+      been verified or completed.
+    annotations:
+      severity_range:
+        tag: severity_range
+        value:
+          minimum: low
+          maximum: high
+      typical_triggers:
+        tag: typical_triggers
+        value:
+          - "Budget constraints"
+          - "Weak termination criteria"
+          - "Tool errors misread as success"
+          - "Missing progress metrics"
+          - "Lack of validator-gated completion"
+      detection_signals:
+        tag: detection_signals
+        value:
+          - "Final done-like messages without a preceding verification step"
+          - "Stopping after partial execution despite unresolved work"
+          - "Success claims with no validator or test output"
+          - "Missing state deltas that confirm completion"
+          - "Traces that end immediately after an error without recovery"
+      mitigations:
+        tag: mitigations
+        value:
+          - "Gate completion on validators, tests, or explicit confirmation"
+          - "Require evidence of completion in the trace"
+          - "Add safe-abort and escalation paths instead of silent early exit"
+          - "Track progress metrics independently of assistant text"
+      related_failure_modes:
+        tag: related_failure_modes
+        value:
+          - "verification_failure"
+          - "step_repetition_loop"
+          - "insufficient_planning_long_horizon_brittleness"
+    attributes:
+      validation_surface:
+        range: string
+        description: >-
+          Validator, test surface, or explicit completion check expected before
+          termination.
+
+  StepRepetitionLoop:
+    is_a: AgentCognitionOrchestration
+    title: "Step Repetition Loop"
+    description: >-
+      The agent repeats identical or cyclic actions without making progress,
+      wasting resources and potentially repeating side effects.
+    annotations:
+      severity_range:
+        tag: severity_range
+        value:
+          minimum: low
+          maximum: high
+      typical_triggers:
+        tag: typical_triggers
+        value:
+          - "Inadequate loop detection"
+          - "Missing environment state deltas"
+          - "Weak progress metrics"
+          - "Tool failures followed by naive retries"
+          - "Miscalibrated utility or reward heuristics"
+      detection_signals:
+        tag: detection_signals
+        value:
+          - "Repeated identical tool calls with the same arguments"
+          - "Cyclic action sequences"
+          - "Unchanged environment outputs across retries"
+          - "Rising cost with no new evidence"
+          - "Repeated attempts after a deterministic schema failure"
+      mitigations:
+        tag: mitigations
+        value:
+          - "Add loop detectors and repeated-action caps"
+          - "Compare tool results before retrying"
+          - "Escalate after bounded retries instead of continuing blindly"
+          - "Use validator-gated state changes to confirm progress"
+      related_failure_modes:
+        tag: related_failure_modes
+        value:
+          - "premature_termination"
+          - "tool_misuse"
+          - "resource_exhaustion_agent_denial_of_service"
+    attributes:
+      repeated_tool_signature:
+        range: string
+        description: >-
+          Tool signature repeatedly invoked without meaningful state change.
+      repeated_call_count:
+        range: integer
+        description: >-
+          Number of repeated identical calls observed in the loop.
+
+  ReasoningActionMismatch:
+    is_a: AgentCognitionOrchestration
+    title: "Reasoning-Action Mismatch"
+    description: >-
+      The agent's stated plan or reasoning does not match the actions it
+      actually executes, degrading trust and increasing hazard.
+    annotations:
+      severity_range:
+        tag: severity_range
+        value:
+          minimum: medium
+          maximum: high
+      typical_triggers:
+        tag: typical_triggers
+        value:
+          - "Tool-call formatting errors"
+          - "Latent instruction overrides"
+          - "Hallucinated tool outputs"
+          - "UI or telemetry gaps between plan and execution"
+          - "Weak grounding between text plans and tool schemas"
+      detection_signals:
+        tag: detection_signals
+        value:
+          - "Semantic divergence between reasoning text and tool calls"
+          - "Audit trail discrepancies"
+          - "Claimed validations that do not appear in the trace"
+          - "Actions that contradict immediately preceding intent statements"
+          - "Tool outputs referenced before they exist"
+      mitigations:
+        tag: mitigations
+        value:
+          - "Use typed tool interfaces and constrained decoding"
+          - "Prefer machine-checkable executable plans"
+          - "Log arguments and outputs for every action"
+          - "Differentially test reasoning traces across seeds"
+      related_failure_modes:
+        tag: related_failure_modes
+        value:
+          - "goal_intent_mismatch"
+          - "tool_misuse"
+          - "verification_failure"
+
+  MultiAgentCoordinationBreakdown:
+    is_a: AgentCognitionOrchestration
+    title: "Multi-Agent Coordination Breakdown"
+    description: >-
+      Multiple agents fail to coordinate because of role violations, ignored
+      inputs, withheld information, or shared-state failures.
+    annotations:
+      severity_range:
+        tag: severity_range
+        value:
+          minimum: medium
+          maximum: critical
+      typical_triggers:
+        tag: typical_triggers
+        value:
+          - "Ambiguous role definitions"
+          - "Conflicting incentives"
+          - "Missing shared-memory protocols"
+          - "Long multi-agent dialogues"
+          - "Weak arbitration or consensus logic"
+      detection_signals:
+        tag: detection_signals
+        value:
+          - "Inter-agent contradictions"
+          - "Ignored inputs or missing handoffs"
+          - "Conversation resets in multi-agent flows"
+          - "Divergence in agent beliefs over time"
+          - "Consensus failure counters or deadlocks"
+      mitigations:
+        tag: mitigations
+        value:
+          - "Use explicit protocols for roles, turn-taking, and arbitration"
+          - "Version shared state across agents"
+          - "Assign a supervisor with limited authority and validation duties"
+          - "Evaluate multi-agent traces separately from single-agent traces"
+      related_failure_modes:
+        tag: related_failure_modes
+        value:
+          - "state_desynchronization_context_loss"
+          - "observability_provenance_gaps"
+          - "reasoning_action_mismatch"
+
+  WrongToolSelection:
+    is_a: ToolingIntegrationActuation
+    title: "Wrong Tool Selection"
+    description: >-
+      The agent chooses an inappropriate tool for the task, even if the chosen
+      tool is invoked correctly.
+    annotations:
+      severity_range:
+        tag: severity_range
+        value:
+          minimum: medium
+          maximum: critical
+      typical_triggers:
+        tag: typical_triggers
+        value:
+          - "Overlapping tool capabilities"
+          - "Vague tool descriptions"
+          - "Weak tool-choice training"
+          - "Partial observability about required parameters"
+          - "Missing reject-or-defer option"
+      detection_signals:
+        tag: detection_signals
+        value:
+          - "Tool failures that would not occur with a more appropriate tool"
+          - "Endpoint mismatch relative to stated intent"
+          - "Detours through unrelated tools before success"
+          - "High retry volume across several incompatible tools"
+          - "Explicit comments that the wrong tool was used"
+      mitigations:
+        tag: mitigations
+        value:
+          - "Provide clearer tool contracts and examples"
+          - "Add reject and ask-human branches for uncertain cases"
+          - "Benchmark selection accuracy under noisy conditions"
+          - "Restrict sensitive tools behind additional policy checks"
+      related_failure_modes:
+        tag: related_failure_modes
+        value:
+          - "tool_misuse"
+          - "reasoning_action_mismatch"
+          - "constraint_omission_policy_noncompliance"
+
+  ToolMisuse:
+    is_a: ToolingIntegrationActuation
+    title: "Tool Misuse"
+    description: >-
+      The agent selects a plausible tool but invokes it with invalid arguments,
+      wrong sequencing, or schema mismatches that cascade into failure.
+    annotations:
+      severity_range:
+        tag: severity_range
+        value:
+          minimum: medium
+          maximum: critical
+      typical_triggers:
+        tag: typical_triggers
+        value:
+          - "Contract mismatches between generation and API schemas"
+          - "Validation or type errors"
+          - "Partial observability over required fields"
+          - "Ambiguous tool semantics"
+          - "Retry behavior that replays the same invalid call"
+      detection_signals:
+        tag: detection_signals
+        value:
+          - "Schema validation errors"
+          - "Missing required argument errors"
+          - "JSON decode failures in tool pipelines"
+          - "Repeated identical tool retries after deterministic failures"
+          - "Unknown or out-of-range fields in tool payloads"
+      mitigations:
+        tag: mitigations
+        value:
+          - "Enforce strict schemas and static checks"
+          - "Simulate tools during evaluation"
+          - "Short-circuit repeated invalid retries"
+          - "Require ask-human or reject flows for uncertain arguments"
+      related_failure_modes:
+        tag: related_failure_modes
+        value:
+          - "wrong_tool_selection"
+          - "step_repetition_loop"
+          - "unsafe_tool_output_handling"
+    attributes:
+      tool_name:
+        range: string
+        description: >-
+          Tool implicated in the misuse event.
+      interface_error_kind:
+        range: string
+        description: >-
+          Tool-interface or invocation error kind observed in the trace.
+
+  UnsafeToolOutputHandling:
+    is_a: ToolingIntegrationActuation
+    title: "Unsafe Tool-Output Handling"
+    description: >-
+      Tool outputs are treated as trusted instructions or executable content
+      without sanitization or provenance checks.
+    annotations:
+      severity_range:
+        tag: severity_range
+        value:
+          minimum: high
+          maximum: critical
+      typical_triggers:
+        tag: typical_triggers
+        value:
+          - "LLM-output-to-executor pipelines"
+          - "Retrieval-augmented browsing"
+          - "Code-writing or file-writing agents"
+          - "Automated email or workflow execution"
+          - "Missing trust boundaries around external content"
+      detection_signals:
+        tag: detection_signals
+        value:
+          - "Executable payloads flowing directly into tools"
+          - "Anomalous file writes or network calls after retrieval"
+          - "Injection signatures in tool outputs"
+          - "Missing provenance for content later treated as instructions"
+          - "Security scanner alerts after rendering or execution"
+      mitigations:
+        tag: mitigations
+        value:
+          - "Sanitize and escape untrusted outputs before execution"
+          - "Enforce data-versus-instruction boundaries"
+          - "Sandbox code execution and file mutation"
+          - "Red-team output-to-action workflows"
+      related_failure_modes:
+        tag: related_failure_modes
+        value:
+          - "prompt_injection_indirect_instruction_hijacking"
+          - "tool_misuse"
+          - "unauthorized_actuation_permission_boundary_violation"
+
+  UnauthorizedActuationPermissionBoundaryViolation:
+    is_a: ToolingIntegrationActuation
+    title: "Unauthorized Actuation / Permission Boundary Violation"
+    description: >-
+      The agent performs actions beyond its authorized scope, often because
+      action gating or identity checks are weak.
+    annotations:
+      severity_range:
+        tag: severity_range
+        value:
+          minimum: critical
+          maximum: critical
+      typical_triggers:
+        tag: typical_triggers
+        value:
+          - "Overbroad credentials"
+          - "Shared service accounts"
+          - "Missing confirmation for irreversible actions"
+          - "Weak auth integration"
+          - "Instruction hijacking that bypasses approval intent"
+      detection_signals:
+        tag: detection_signals
+        value:
+          - "Authorization denials followed by retries"
+          - "Privilege-escalation patterns"
+          - "Resource access outside task scope"
+          - "Unapproved mutation of sensitive systems"
+          - "High-entropy roaming across tools and resources"
+      mitigations:
+        tag: mitigations
+        value:
+          - "Enforce per-action authorization"
+          - "Use escrowed credentials and segmented environments"
+          - "Require confirmation for irreversible actions"
+          - "Audit and review all sensitive-tool access"
+      related_failure_modes:
+        tag: related_failure_modes
+        value:
+          - "constraint_omission_policy_noncompliance"
+          - "prompt_injection_indirect_instruction_hijacking"
+          - "agent_compromise_instruction_hijack"
+
+  HallucinationFabricatedEvidence:
+    is_a: PerceptionContextMemory
+    title: "Hallucination / Fabricated Evidence"
+    description: >-
+      The agent generates incorrect facts, invented citations, or fabricated
+      evidence that then contaminates downstream reasoning or action.
+    annotations:
+      severity_range:
+        tag: severity_range
+        value:
+          minimum: medium
+          maximum: critical
+      typical_triggers:
+        tag: typical_triggers
+        value:
+          - "Ungrounded open-domain queries"
+          - "Domain-specific nomenclature gaps"
+          - "Long-horizon summarization"
+          - "Citation generation without provenance"
+          - "Weak retrieval alignment"
+      detection_signals:
+        tag: detection_signals
+        value:
+          - "Fact-checker disagreement"
+          - "Invalid citations or missing provenance"
+          - "Claims unsupported by any retrieved source"
+          - "Contradictions with authoritative databases"
+          - "Reasoning that references nonexistent outputs"
+      mitigations:
+        tag: mitigations
+        value:
+          - "Require claim-level provenance"
+          - "Use retrieval-backed verification"
+          - "Add abstention behavior under uncertainty"
+          - "Restrict autonomous action when factual certainty is low"
+      related_failure_modes:
+        tag: related_failure_modes
+        value:
+          - "verification_failure"
+          - "reasoning_action_mismatch"
+          - "observability_provenance_gaps"
+
+  VerificationFailure:
+    is_a: SystemReliabilityObservability
+    title: "Verification Failure"
+    description: >-
+      The agent performs no verification, incomplete verification, or incorrect
+      verification, allowing bad outputs to pass as successful.
+    annotations:
+      severity_range:
+        tag: severity_range
+        value:
+          minimum: high
+          maximum: high
+      typical_triggers:
+        tag: typical_triggers
+        value:
+          - "Missing validators"
+          - "Same-model actor and judge"
+          - "Weak tests or no executable checks"
+          - "Missing ground truth"
+          - "Mis-specified evaluation metrics"
+      detection_signals:
+        tag: detection_signals
+        value:
+          - "Success claims that lack supporting evidence"
+          - "High false-pass rates"
+          - "Disagreement among independent verifiers"
+          - "Validator coverage gaps"
+          - "Internal success markers that contradict external evidence"
+      mitigations:
+        tag: mitigations
+        value:
+          - "Use independent validators and executable checks"
+          - "Diversify verification tools or models"
+          - "Evaluate the monitors themselves"
+          - "Retain verification evidence in trace logs"
+      related_failure_modes:
+        tag: related_failure_modes
+        value:
+          - "premature_termination"
+          - "weak_fallback_silent_degradation"
+          - "hallucination_fabricated_evidence"
+
+  MemoryPoisoningPersistentInstructionCorruption:
+    is_a: PerceptionContextMemory
+    title: "Memory Poisoning / Persistent Instruction Corruption"
+    description: >-
+      Malicious or contaminated content is written into persistent memory so
+      future recalls manipulate later behavior.
+    annotations:
+      alignment_status:
+        tag: alignment_status
+        value: trace_extension
+      cross_cutting_concerns:
+        tag: cross_cutting_concerns
+        value:
+          - "security"
+          - "adversarial"
+      severity_range:
+        tag: severity_range
+        value:
+          minimum: critical
+          maximum: critical
+      typical_triggers:
+        tag: typical_triggers
+        value:
+          - "Autonomous memorization"
+          - "Shared memory across agents"
+          - "Unvalidated writes into RAG or memory stores"
+          - "Treating recalled memory as trusted"
+          - "Missing authorization around memory mutation"
+      detection_signals:
+        tag: detection_signals
+        value:
+          - "Untrusted memory-write events"
+          - "Behavior drift correlated with recalled items"
+          - "Retrievals that reintroduce malicious instructions"
+          - "Missing provenance on memory content"
+          - "Persistent recurrence across sessions"
+      mitigations:
+        tag: mitigations
+        value:
+          - "Authenticate and validate memory writes"
+          - "Separate trusted and untrusted memory tiers"
+          - "Expose memory inspection and remediation to operators"
+          - "Continuously monitor memory mutations"
+      related_failure_modes:
+        tag: related_failure_modes
+        value:
+          - "targeted_knowledge_base_poisoning"
+          - "prompt_injection_indirect_instruction_hijacking"
+          - "state_desynchronization_context_loss"
+
+  PromptInjectionIndirectInstructionHijacking:
+    is_a: PerceptionContextMemory
+    title: "Prompt Injection / Indirect Instruction Hijacking"
+    description: >-
+      Adversarial instructions in user input or retrieved third-party content
+      cause the agent to ignore its original goals and controls.
+    annotations:
+      alignment_status:
+        tag: alignment_status
+        value: trace_extension
+      cross_cutting_concerns:
+        tag: cross_cutting_concerns
+        value:
+          - "security"
+          - "adversarial"
+      severity_range:
+        tag: severity_range
+        value:
+          minimum: high
+          maximum: critical
+      typical_triggers:
+        tag: typical_triggers
+        value:
+          - "Browsing or retrieval-augmented generation"
+          - "Email or knowledge ingestion"
+          - "Poor separation between data and instructions"
+          - "Untrusted pages or documents reaching high-privilege tools"
+          - "Weak allowlisting around tool calls"
+      detection_signals:
+        tag: detection_signals
+        value:
+          - "Sudden goal drift after retrieval"
+          - "Instruction override cues in untrusted content"
+          - "Suspicious tool-call sequences after fetch operations"
+          - "Monitor alerts for prompt-injection signatures"
+          - "New directives that conflict with prior constraints"
+      mitigations:
+        tag: mitigations
+        value:
+          - "Isolate untrusted content from tool execution"
+          - "Enforce deterministic policy checks and allowlists"
+          - "Add robust sandboxing and sanitization"
+          - "Continuously adversarially test retrieval chains"
+      related_failure_modes:
+        tag: related_failure_modes
+        value:
+          - "unsafe_tool_output_handling"
+          - "agent_compromise_instruction_hijack"
+          - "unauthorized_actuation_permission_boundary_violation"
+
+  StateDesynchronizationContextLoss:
+    is_a: PerceptionContextMemory
+    title: "State Desynchronization / Context Loss"
+    description: >-
+      Conversation history, task state, or environment assumptions diverge from
+      reality, leading to locally coherent but globally incorrect behavior.
+    annotations:
+      severity_range:
+        tag: severity_range
+        value:
+          minimum: medium
+          maximum: high
+      typical_triggers:
+        tag: typical_triggers
+        value:
+          - "Long sessions"
+          - "Context compaction or truncation"
+          - "Tool outputs not incorporated into state"
+          - "Concurrency or conversation resets"
+          - "Weak serialization of intermediate state"
+      detection_signals:
+        tag: detection_signals
+        value:
+          - "Explicit compaction or reset markers in the trace"
+          - "Replay divergence after a context boundary"
+          - "Sudden amnesia or loss-of-history messages"
+          - "Corrective loops after dropped context"
+          - "Inconsistencies between stored state and new observations"
+      mitigations:
+        tag: mitigations
+        value:
+          - "Use explicit state machines and snapshots"
+          - "Version and compress context with invariants"
+          - "Replay traces during debugging"
+          - "Inject context truncation faults during testing"
+      related_failure_modes:
+        tag: related_failure_modes
+        value:
+          - "multi_agent_coordination_breakdown"
+          - "memory_poisoning_persistent_instruction_corruption"
+          - "observability_provenance_gaps"
+    attributes:
+      state_reset_marker:
+        range: string
+        description: >-
+          Explicit marker of conversation reset, context compaction, or state
+          loss.
+
+  ObservabilityProvenanceGaps:
+    is_a: SystemReliabilityObservability
+    title: "Observability / Provenance Gaps"
+    description: >-
+      The system lacks the trace detail needed to explain, audit, or reproduce
+      why an action occurred, weakening accountability and recovery.
+    annotations:
+      severity_range:
+        tag: severity_range
+        value:
+          minimum: high
+          maximum: high
+      typical_triggers:
+        tag: typical_triggers
+        value:
+          - "Insufficient structured logging"
+          - "Privacy trade-offs without compensating controls"
+          - "Rapidly evolving tool ecosystems"
+          - "Multi-agent handoffs"
+          - "Nonstandard trace formats"
+      detection_signals:
+        tag: detection_signals
+        value:
+          - "Unknown-cause incidents"
+          - "Missing tool arguments or outputs in the trace"
+          - "Low replayability or poor reproducibility"
+          - "Long mean time to resolution for incidents"
+          - "Missing provenance for retrieved content"
+      mitigations:
+        tag: mitigations
+        value:
+          - "Standardize structured trace schemas"
+          - "Add component IDs and provenance tags"
+          - "Evaluate monitors and postmortems against trace completeness"
+          - "Scale auditability to deployment risk"
+      related_failure_modes:
+        tag: related_failure_modes
+        value:
+          - "weak_fallback_silent_degradation"
+          - "verification_failure"
+          - "state_desynchronization_context_loss"
+
+  ResourceExhaustionAgentDenialOfService:
+    is_a: RuntimeEnvironmentGrounding
+    title: "Resource Exhaustion / Agent Denial of Service"
+    description: >-
+      The agent exhausts tokens, compute, time, or tool quotas, causing service
+      disruption or unsafe partial execution.
+    annotations:
+      alignment_status:
+        tag: alignment_status
+        value: trace_adaptation
+      severity_range:
+        tag: severity_range
+        value:
+          minimum: medium
+          maximum: high
+      typical_triggers:
+        tag: typical_triggers
+        value:
+          - "Unbounded loops"
+          - "Large tool outputs"
+          - "Adversarial cost-maximizing prompts"
+          - "Missing rate limits or circuit breakers"
+          - "Weak caching and retrieval bounds"
+      detection_signals:
+        tag: detection_signals
+        value:
+          - "Token budget utilization near the model context window"
+          - "Quota exhaustion or insufficient-quota errors"
+          - "Latency spikes with no corresponding progress"
+          - "Rising cost across repeated failures"
+          - "Explicit token limit or rate limit markers"
+      mitigations:
+        tag: mitigations
+        value:
+          - "Enforce strict budgets and circuit breakers"
+          - "Use progressive summarization"
+          - "Bound retrieval size and retry volume"
+          - "Add adversarial cost testing before deployment"
+      related_failure_modes:
+        tag: related_failure_modes
+        value:
+          - "step_repetition_loop"
+          - "weak_fallback_silent_degradation"
+          - "tool_misuse"
+    attributes:
+      context_ratio:
+        range: float
+        description: >-
+          Token usage relative to the available context window.
+      primary_used_percent:
+        range: integer
+        description: >-
+          Primary quota or rate-limit usage percentage.
+
+  AgentCompromiseInstructionHijack:
+    is_a: ToolingIntegrationActuation
+    title: "Agent Compromise / Instruction Hijack"
+    description: >-
+      The agent's control flow is hijacked by malicious instructions or
+      compromised intermediaries so that it acts on attacker objectives.
+    annotations:
+      alignment_status:
+        tag: alignment_status
+        value: trace_extension
+      cross_cutting_concerns:
+        tag: cross_cutting_concerns
+        value:
+          - "security"
+          - "adversarial"
+      severity_range:
+        tag: severity_range
+        value:
+          minimum: high
+          maximum: critical
+      typical_triggers:
+        tag: typical_triggers
+        value:
+          - "Prompt injection reaching high-privilege contexts"
+          - "Compromised plugins, tools, or connectors"
+          - "Overbroad credentials"
+          - "Missing integrity checks on intermediate messages"
+          - "Unsafe delegation chains"
+      detection_signals:
+        tag: detection_signals
+        value:
+          - "Abrupt changes in objective after untrusted content ingestion"
+          - "New instructions that bypass normal approvals"
+          - "Actions inconsistent with prior policy constraints"
+          - "Sensitive tool use immediately after suspicious input"
+          - "Compromise indicators in intermediary tool outputs"
+      mitigations:
+        tag: mitigations
+        value:
+          - "Harden trust boundaries around plugins and retrieved content"
+          - "Require policy checks before privileged actions"
+          - "Limit delegation authority and credential scope"
+          - "Audit integrity of intermediaries and connectors"
+      related_failure_modes:
+        tag: related_failure_modes
+        value:
+          - "prompt_injection_indirect_instruction_hijacking"
+          - "unauthorized_actuation_permission_boundary_violation"
+          - "targeted_knowledge_base_poisoning"
+
+  TargetedKnowledgeBasePoisoning:
+    is_a: PerceptionContextMemory
+    title: "Targeted Knowledge-Base Poisoning"
+    description: >-
+      External knowledge stores, retrieval corpora, or indexed artifacts are
+      deliberately poisoned so the agent later reasons from corrupted evidence.
+    annotations:
+      alignment_status:
+        tag: alignment_status
+        value: trace_extension
+      cross_cutting_concerns:
+        tag: cross_cutting_concerns
+        value:
+          - "security"
+          - "adversarial"
+      severity_range:
+        tag: severity_range
+        value:
+          minimum: high
+          maximum: critical
+      typical_triggers:
+        tag: typical_triggers
+        value:
+          - "Unvalidated retrieval corpora"
+          - "Shared indexes fed by external contributors"
+          - "Weak provenance on imported documents"
+          - "Autonomous ingestion of third-party content"
+          - "Missing trust-tier separation in knowledge stores"
+      detection_signals:
+        tag: detection_signals
+        value:
+          - "Drift tied to specific retrieved documents"
+          - "Recurrent malicious or low-quality sources in evidence chains"
+          - "Missing provenance or trust level on retrieved artifacts"
+          - "Retrieval results that consistently redirect goals"
+          - "Behavior changes after index refreshes or imports"
+      mitigations:
+        tag: mitigations
+        value:
+          - "Validate and sign knowledge-base updates"
+          - "Track provenance and trust tiers for retrieved content"
+          - "Quarantine untrusted corpora from privileged workflows"
+          - "Continuously red-team retrieval and ingestion channels"
+      related_failure_modes:
+        tag: related_failure_modes
+        value:
+          - "memory_poisoning_persistent_instruction_corruption"
+          - "prompt_injection_indirect_instruction_hijacking"
+          - "hallucination_fabricated_evidence"
+
+enums:
+  SeverityLevel:
+    description: >-
+      Project-specific qualitative severity scale used for operational triage
+      in the trace taxonomy. This scale is local to the repo rather than taken
+      from Shah et al. (2026).
+    annotations:
+      source_reference:
+        tag: source_reference
+        value: "Local operational metadata for agentic-trace-analyzer."
+    permissible_values:
+      low:
+        description: Low severity and typically limited blast radius.
+      medium:
+        description: Material impact that usually remains recoverable.
+      high:
+        description: Severe impact, elevated operator burden, or clear policy risk.
+      critical:
+        description: Irreversible, safety-critical, or system-compromising impact.
+
+  Shah2026FaultDimension:
+    description: >-
+      The five architectural fault dimensions reported by Shah et al. (2026)
+      for empirical faults in open-source agentic AI systems.
+    annotations:
+      source_reference:
+        tag: source_reference
+        value: "Shah et al. (2026), Figure 2 / Section 3.1.1"
+    permissible_values:
+      agent_cognition_orchestration:
+        description: Faults intrinsic to an agent's cognitive architecture and control flow.
+        annotations:
+          paper_count:
+            tag: paper_count
+            value: 83
+      tooling_integration_actuation:
+        description: Faults at the boundary between agent plans and external tools, APIs, and systems.
+        annotations:
+          paper_count:
+            tag: paper_count
+            value: 66
+      perception_context_memory:
+        description: Faults in input interpretation, context persistence, and memory/state handling.
+        annotations:
+          paper_count:
+            tag: paper_count
+            value: 72
+      runtime_environment_grounding:
+        description: Faults rooted in dependencies, platform assumptions, and execution environments.
+        annotations:
+          paper_count:
+            tag: paper_count
+            value: 87
+      system_reliability_observability:
+        description: Faults that degrade robustness, diagnosability, or user-facing reliability.
+        annotations:
+          paper_count:
+            tag: paper_count
+            value: 67
+
+  Shah2026SymptomClass:
+    description: >-
+      Observable symptom classes reported in Shah et al. (2026). They are kept
+      here as a reference vocabulary alongside the trace failure-mode taxonomy.
+    annotations:
+      source_reference:
+        tag: source_reference
+        value: "Shah et al. (2026), Table 1 / Section 3.1.2"
+    permissible_values:
+      data_validation_errors:
+        description: Invalid schemas, malformed outputs, parsing failures, or unsafe data propagation.
+        annotations:
+          paper_count:
+            tag: paper_count
+            value: 75
+      installation_dependency_issues:
+        description: Installation failures, import errors, or dependency conflicts.
+        annotations:
+          paper_count:
+            tag: paper_count
+            value: 50
+      execution_runtime_failures:
+        description: Crashes, runtime exceptions, and failures during active task execution.
+        annotations:
+          paper_count:
+            tag: paper_count
+            value: 40
+      code_quality_structure_issues:
+        description: Defects surfaced through linting, structural breakage, or implementation mistakes.
+        annotations:
+          paper_count:
+            tag: paper_count
+            value: 38
+      agent_specific_issues:
+        description: Behavioural anomalies in planning, state, or control that are specific to agentic systems.
+        annotations:
+          paper_count:
+            tag: paper_count
+            value: 36
+      error_handling:
+        description: Missing, incorrect, or misleading exception handling and diagnostics.
+        annotations:
+          paper_count:
+            tag: paper_count
+            value: 31
+      llm_specific_issues:
+        description: Symptoms tied to model outputs, token handling, or provider integration.
+        annotations:
+          paper_count:
+            tag: paper_count
+            value: 25
+      connection_network_errors:
+        description: Connectivity, authentication, or service-access failures.
+        annotations:
+          paper_count:
+            tag: paper_count
+            value: 21
+      ui_related_issues:
+        description: Incorrect or misleading presentation of state in user-facing interfaces.
+        annotations:
+          paper_count:
+            tag: paper_count
+            value: 17
+      tool_function_call_issues:
+        description: Malformed tool invocations, parameter issues, or unsupported calls.
+        annotations:
+          paper_count:
+            tag: paper_count
+            value: 16
+      file_resource_errors:
+        description: Failures in file access, path handling, or other shared resource usage.
+        annotations:
+          paper_count:
+            tag: paper_count
+            value: 14
+      documentation_issues:
+        description: Outdated, incorrect, or misleading usage documentation.
+        annotations:
+          paper_count:
+            tag: paper_count
+            value: 5
+      synchronisation_issues:
+        description: Race conditions, interleaving defects, and parallel coordination errors.
+        annotations:
+          paper_count:
+            tag: paper_count
+            value: 4
+
+  Shah2026RootCauseCategory:
+    description: >-
+      Root-cause categories reported in Shah et al. (2026). They are modeled as
+      reference metadata so schema consumers can connect trace failures to the
+      paper's broader software-fault analysis.
+    annotations:
+      source_reference:
+        tag: source_reference
+        value: "Shah et al. (2026), Table 2 / Section 3.1.3"
+    permissible_values:
+      dependency_integration_changes:
+        description: Failures caused by evolving libraries, integrations, and platform dependencies.
+        annotations:
+          paper_count:
+            tag: paper_count
+            value: 73
+      data_type_mismatch:
+        description: Mismatches between loosely structured data and strict program expectations.
+        annotations:
+          paper_count:
+            tag: paper_count
+            value: 66
+      llm_behaviour_interface_changes:
+        description: Provider-specific API drift, token behaviour, and configuration sensitivity.
+        annotations:
+          paper_count:
+            tag: paper_count
+            value: 49
+      state_control_complexity:
+        description: Long-horizon control and internal-state complexity in adaptive agent behaviour.
+        annotations:
+          paper_count:
+            tag: paper_count
+            value: 48
+      external_api_tool_changes:
+        description: Changes or mismatches in external API contracts and tool behaviour.
+        annotations:
+          paper_count:
+            tag: paper_count
+            value: 38
+      weak_error_handling_logging:
+        description: Poor exception handling, unclear messages, and suppressed diagnostics.
+        annotations:
+          paper_count:
+            tag: paper_count
+            value: 28
+      configuration_complexity:
+        description: Fragility caused by defaults, schema drift, or missing config validation.
+        annotations:
+          paper_count:
+            tag: paper_count
+            value: 22
+      resource_environment_limits:
+        description: Memory, storage, path-length, quota, or rate-limit constraints.
+        annotations:
+          paper_count:
+            tag: paper_count
+            value: 16
+      architecture_design_issues:
+        description: Structural problems in abstractions, module organisation, or system design.
+        annotations:
+          paper_count:
+            tag: paper_count
+            value: 11
+      outdated_incorrect_documentation:
+        description: Documentation that no longer matches interfaces, setup, or expected behaviour.
+        annotations:
+          paper_count:
+            tag: paper_count
+            value: 10
+      access_control_credential_issues:
+        description: Misconfigured permissions, invalid credentials, or missing secret validation.
+        annotations:
+          paper_count:
+            tag: paper_count
+            value: 8
+      concurrency_synchronisation_complexity:
+        description: Race conditions and flawed synchronisation in shared-state or parallel workflows.
+        annotations:
+          paper_count:
+            tag: paper_count
+            value: 6
